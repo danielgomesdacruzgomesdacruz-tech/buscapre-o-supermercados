@@ -1,0 +1,6 @@
+{
+  "name": "BuscaPreço Supermercados",
+  "description": "Aplicativo de busca e comparação de preços em supermercados, eletrodomésticos, veículos, autopeças e postos de combustível com IA, rotas inteligentes, leitor de notas fiscais e carrinho inteligente.",
+  "requestFramePermissions": ["camera", "geolocation"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

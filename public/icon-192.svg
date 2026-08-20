@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192" width="192" height="192">
+  <defs>
+    <linearGradient id="pwaGrad192" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#059669" />
+      <stop offset="100%" stop-color="#065f46" />
+    </linearGradient>
+    <filter id="shadow192" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000" flood-opacity="0.25"/>
+    </filter>
+  </defs>
+  <rect width="192" height="192" rx="42" fill="url(#pwaGrad192)" />
+  <g filter="url(#shadow192)" transform="translate(36, 36) scale(0.625)">
+    <!-- Cart & Tag Combined Icon in Crisp White and Amber Accents -->
+    <path d="M16 16h24l26.8 60.3a16 16 0 0 0 14.7 9.7h61a16 16 0 0 0 14.8-10l18.7-48H52" fill="none" stroke="#ffffff" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="82" cy="148" r="16" fill="#facc15" stroke="#ffffff" stroke-width="4"/>
+    <circle cx="146" cy="148" r="16" fill="#facc15" stroke="#ffffff" stroke-width="4"/>
+    <!-- Lightning Spark -->
+    <path d="M112 28l-20 36h28l-12 36 36-44h-24l12-28z" fill="#facc15" stroke="#ffffff" stroke-width="3" stroke-linejoin="round"/>
+  </g>
+</svg>
