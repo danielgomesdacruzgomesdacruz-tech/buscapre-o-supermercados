@@ -3,7 +3,7 @@ import { Header } from './components/Header';
 import { ProductSearchTab } from './components/ProductSearchTab';
 import { SmartCartTab } from './components/SmartCartTab';
 import { ReceiptScannerTab } from './components/ReceiptScannerTab';
-import { AiSearchTab } from './components/AiSearchTab';
+import { AiSearchResultModal } from './components/AiSearchResultModal';
 import { DealsCommunityTab } from './components/DealsCommunityTab';
 import { SupermarketRoutesTab } from './components/SupermarketRoutesTab';
 import { VehiclesTab } from './components/VehiclesTab';
@@ -55,7 +55,7 @@ export default function App() {
     ];
   });
 
-  const [aiSearchInitialQuery, setAiSearchInitialQuery] = useState<string>('');
+  const [aiModalQuery, setAiModalQuery] = useState<string | null>(null);
   const [historyModalProduct, setHistoryModalProduct] = useState<Product | null>(null);
   const [alertModalProduct, setAlertModalProduct] = useState<Product | null>(null);
   const [alerts, setAlerts] = useState<PriceAlert[]>([]);
@@ -278,12 +278,10 @@ export default function App() {
     setProducts((prev) => [newProd, ...prev]);
     handleAddToCart(newProd, 1);
     showToast(`"${newProd.name}" adicionado com sucesso!`);
-    setActiveTab('cart');
   };
 
   const handleNavigateToAiSearch = (query: string) => {
-    setAiSearchInitialQuery(query);
-    setActiveTab('ai-search');
+    setAiModalQuery(query);
   };
 
   const handleSaveAlert = (
@@ -400,17 +398,6 @@ export default function App() {
           />
         )}
 
-        {activeTab === 'ai-search' && (
-          <AiSearchTab
-            initialQuery={aiSearchInitialQuery}
-            selectedCity={selectedCity}
-            onAddCustomProduct={handleAddCustomProduct}
-            onNavigateHome={() => setActiveTab('search')}
-            onNavigateToRoutes={() => setActiveTab('routes')}
-            onNavigateToVehicles={() => setActiveTab('vehicles')}
-          />
-        )}
-
         {activeTab === 'deals' && (
           <DealsCommunityTab
             products={products}
@@ -433,8 +420,6 @@ export default function App() {
                 ? 'BuscaPreço Rotas & Navegação'
                 : activeTab === 'scanner'
                 ? 'BuscaPreço OCR Scanner'
-                : activeTab === 'ai-search'
-                ? 'BuscaPreço IA Assistente'
                 : 'BuscaPreço Supermercados & Atacarejos'}
             </span>
             <span>•</span>
@@ -466,6 +451,15 @@ export default function App() {
           onSaveAlert={handleSaveAlert}
         />
       )}
+
+      {/* Modal de resultado da Pesquisa com IA, aberto a partir de qualquer aba */}
+      <AiSearchResultModal
+        query={aiModalQuery}
+        selectedCity={selectedCity}
+        onClose={() => setAiModalQuery(null)}
+        onAddCustomProduct={handleAddCustomProduct}
+        onNavigateToRoutes={() => setActiveTab('routes')}
+      />
     </div>
   );
 }
