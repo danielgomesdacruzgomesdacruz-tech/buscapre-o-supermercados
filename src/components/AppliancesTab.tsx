@@ -253,6 +253,58 @@ export const AppliancesTab: React.FC<AppliancesTabProps> = ({
             Compare geladeiras Frost Free, lavadoras e lava e seca, air fryers, fornos e micro-ondas, cooktops de indução e ar-condicionado. Encontre descontos à vista no Pix, cupons ativos e lojas com showroom físico perto de você em <span className="text-sky-300 font-bold">{selectedCity}</span>.
           </p>
 
+          {/* Search Input Bar */}
+          <div className="relative flex flex-col sm:flex-row gap-2 mt-5">
+            <div className="relative flex-1">
+              <Search className="w-5 h-5 absolute left-3.5 top-3.5 text-stone-400" />
+              <input
+                id="main-appliance-search-input"
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Busque por eletrodoméstico, marca, modelo ou recurso (Ex: Geladeira Brastemp Frost Free, Air Fryer Walita, Lava e Seca 11kg)..."
+                className="w-full pl-11 pr-20 py-3 bg-white text-stone-900 rounded-2xl text-sm font-medium focus:ring-4 focus:ring-sky-400 focus:outline-hidden shadow-md"
+              />
+              {searchQuery && (
+                <button
+                  type="button"
+                  onClick={() => setSearchQuery('')}
+                  className="absolute right-3 top-2.5 text-stone-500 hover:text-stone-700 text-xs font-bold px-2 py-1 bg-stone-100 rounded-md cursor-pointer"
+                >
+                  Limpar
+                </button>
+              )}
+            </div>
+
+            {onNavigateToAiSearch && (
+              <button
+                type="button"
+                onClick={() => onNavigateToAiSearch(searchQuery || 'Qual a melhor geladeira custo-benefício 2026?')}
+                className="bg-sky-600 hover:opacity-90 text-white text-xs font-bold px-4 py-3 rounded-2xl flex items-center justify-center gap-1.5 shadow-md whitespace-nowrap transition cursor-pointer"
+              >
+                <Sparkles className="w-4 h-4" />
+                Pesquisar com IA na Web
+              </button>
+            )}
+          </div>
+
+          {/* Quick Search Suggestions Chips */}
+          <div className="flex flex-wrap items-center gap-1.5 mt-3">
+            <span className="text-[11px] font-semibold text-stone-400 mr-1 flex items-center gap-1">
+              <Sparkles className="w-3 h-3 text-amber-400" />
+              Sugestões rápidas:
+            </span>
+            {QUICK_APPLIANCE_TAGS.map((tag) => (
+              <button
+                key={tag}
+                onClick={() => setSearchQuery(tag)}
+                className="text-[11px] bg-white/10 hover:bg-white/20 text-stone-200 hover:text-white px-2.5 py-1 rounded-full border border-white/15 transition cursor-pointer"
+              >
+                {tag}
+              </button>
+            ))}
+          </div>
+
           {/* Quick Stats Ticker */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-5 pt-4 border-t border-stone-800/80">
             <div className="bg-stone-900/60 border border-stone-800 rounded-2xl p-3">
@@ -331,47 +383,10 @@ export const AppliancesTab: React.FC<AppliancesTabProps> = ({
         })}
       </div>
 
-      {/* Search & Filter Controls */}
+      {/* Advanced Filter Controls */}
       <div className="bg-white rounded-3xl p-5 sm:p-6 shadow-xs border border-stone-200 space-y-4">
-        {/* Main Search Input */}
-        <div className="relative">
-          <Search className="w-5 h-5 text-stone-400 absolute left-4 top-1/2 -translate-y-1/2" />
-          <input
-            type="text"
-            placeholder="Busque por eletrodoméstico, marca, modelo ou recurso (Ex: Geladeira Brastemp Frost Free, Air Fryer Walita, Lava e Seca 11kg)..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-12 pr-10 py-3.5 bg-stone-50 border border-stone-200 rounded-2xl text-sm font-medium text-stone-900 placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:bg-white transition"
-          />
-          {searchQuery && (
-            <button
-              onClick={() => setSearchQuery('')}
-              className="absolute right-3.5 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-600 p-1 cursor-pointer"
-            >
-              <X className="w-4 h-4" />
-            </button>
-          )}
-        </div>
-
-        {/* Quick Search Tag Chips */}
-        <div className="flex items-center gap-1.5 flex-wrap">
-          <span className="text-[11px] font-semibold text-stone-400 mr-1 flex items-center gap-1">
-            <Sparkles className="w-3 h-3 text-amber-500" />
-            Sugestões rápidas:
-          </span>
-          {QUICK_APPLIANCE_TAGS.map((tag) => (
-            <button
-              key={tag}
-              onClick={() => setSearchQuery(tag)}
-              className="text-[11px] bg-stone-100 hover:bg-sky-50 hover:text-sky-800 text-stone-600 px-2.5 py-1 rounded-full border border-stone-200 transition cursor-pointer"
-            >
-              {tag}
-            </button>
-          ))}
-        </div>
-
         {/* Advanced Filters Grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 pt-3 border-t border-stone-100">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
           {/* Voltagem */}
           <div>
             <label className="text-[11px] font-bold text-stone-500 uppercase tracking-wider block mb-1">
@@ -496,16 +511,6 @@ export const AppliancesTab: React.FC<AppliancesTabProps> = ({
             </span>
           )}
         </div>
-
-        {onNavigateToAiSearch && (
-          <button
-            onClick={() => onNavigateToAiSearch(searchQuery || 'Qual a melhor geladeira custo-benefício 2026?')}
-            className="text-xs font-semibold text-purple-700 hover:text-purple-900 bg-purple-50 hover:bg-purple-100 border border-purple-200 px-3 py-1.5 rounded-xl transition flex items-center gap-1.5 cursor-pointer self-start sm:self-auto"
-          >
-            <Sparkles className="w-3.5 h-3.5 text-purple-600" />
-            Pedir recomendação ao Assistente IA
-          </button>
-        )}
       </div>
 
       {/* Product Cards Grid */}

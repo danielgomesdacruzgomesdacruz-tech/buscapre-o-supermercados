@@ -5,7 +5,6 @@ import { SmartCartTab } from './components/SmartCartTab';
 import { ReceiptScannerTab } from './components/ReceiptScannerTab';
 import { AiSearchTab } from './components/AiSearchTab';
 import { DealsCommunityTab } from './components/DealsCommunityTab';
-import { ArchitectureGuideTab } from './components/ArchitectureGuideTab';
 import { SupermarketRoutesTab } from './components/SupermarketRoutesTab';
 import { VehiclesTab } from './components/VehiclesTab';
 import { AppliancesTab } from './components/AppliancesTab';
@@ -421,8 +420,6 @@ export default function App() {
             onNavigateHome={() => setActiveTab('search')}
           />
         )}
-
-        {activeTab === 'guide' && <ArchitectureGuideTab />}
       </main>
 
       {/* Footer */}
@@ -449,13 +446,6 @@ export default function App() {
           </div>
 
           <div className="flex items-center gap-4 text-[11px]">
-            <button
-              onClick={() => setActiveTab('guide')}
-              className="text-blue-700 hover:underline font-semibold cursor-pointer"
-            >
-              Guia: Como criar este app?
-            </button>
-            <span>•</span>
             <span>Dados e cotações atualizados diariamente</span>
           </div>
         </div>

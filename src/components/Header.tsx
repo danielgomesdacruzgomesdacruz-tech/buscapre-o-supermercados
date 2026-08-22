@@ -5,7 +5,6 @@ import {
   Receipt,
   Search,
   Tag,
-  BookOpen,
   MapPin,
   Store,
   Navigation,
@@ -151,18 +150,6 @@ const TAB_HEADER_CONFIGS: Record<string, TabHeaderConfig> = {
     badgeStyle: 'bg-rose-100 text-rose-800 border-rose-200',
     subtitle: 'Encartes, promoções relâmpago e preços enviados e confirmados por consumidores na sua região.',
     cityPinColor: 'text-rose-600',
-  },
-  guide: {
-    icon: BookOpen,
-    iconBg: 'bg-blue-600 group-hover:bg-blue-700',
-    iconColor: 'text-white',
-    prefix: 'BuscaPreço',
-    highlightTitle: 'Guia de Arquitetura & Engenharia',
-    titleColor: 'text-blue-600',
-    badgeText: 'Documentação Técnica',
-    badgeStyle: 'bg-blue-100 text-blue-800 border-blue-200',
-    subtitle: 'Stack tecnológica, scrapers de notas fiscais, crawlers, IA generativa e infraestrutura em nuvem.',
-    cityPinColor: 'text-blue-600',
   },
 };
 
@@ -393,19 +380,6 @@ export const Header: React.FC<HeaderProps> = ({
           >
             <Tag className="w-4 h-4 text-rose-500" />
             <span>Radar de Ofertas & Comunidade</span>
-          </button>
-
-          <button
-            id="tab-guide"
-            onClick={() => setActiveTab('guide')}
-            className={`flex items-center gap-1.5 py-2.5 px-3.5 text-xs font-medium border-b-2 whitespace-nowrap transition ml-auto rounded-t-lg ${
-              activeTab === 'guide'
-                ? 'border-blue-600 text-blue-700 font-semibold bg-blue-50'
-                : 'border-transparent text-blue-700 hover:text-blue-900 hover:border-blue-300 bg-blue-50/70'
-            }`}
-          >
-            <BookOpen className="w-4 h-4 text-blue-600" />
-            <span>Guia: Como Criar este App?</span>
           </button>
         </nav>
       </div>
