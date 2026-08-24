@@ -63,7 +63,7 @@ const TAB_HEADER_CONFIGS: Record<string, TabHeaderConfig> = {
     titleColor: 'text-emerald-600',
     badgeText: 'Ao Vivo • Preços de Hoje',
     badgeStyle: 'bg-emerald-100 text-emerald-800 border-emerald-200',
-    subtitle: 'Compare preços entre redes, atacados e mercearias locais e economize até 35% na sua compra.',
+    subtitle: '',
     cityPinColor: 'text-emerald-600',
   },
   vehicles: {
@@ -178,9 +178,11 @@ export const Header: React.FC<HeaderProps> = ({
                   {currentConfig.badgeText}
                 </span>
               </div>
-              <p className="text-xs text-stone-500 mt-0.5 max-w-2xl">
-                {currentConfig.subtitle}
-              </p>
+              {currentConfig.subtitle && (
+                <p className="text-xs text-stone-500 mt-0.5 max-w-2xl">
+                  {currentConfig.subtitle}
+                </p>
+              )}
             </div>
           </div>
 
