@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Header } from './components/Header';
-import { ProductSearchTab } from './components/ProductSearchTab';
+import { ProductSearchTab, DOMAIN_CATEGORIES } from './components/ProductSearchTab';
 import { SmartCartTab } from './components/SmartCartTab';
 import { ReceiptScannerTab } from './components/ReceiptScannerTab';
 import { AiSearchResultModal } from './components/AiSearchResultModal';
@@ -16,6 +16,7 @@ import { UserCoordinates, requestBrowserGeolocation } from './utils/geolocation'
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<string>('search');
+  const [selectedDomain, setSelectedDomain] = useState<string>('supermercado');
   const [selectedCity, setSelectedCity] = useState<string>('São Paulo, SP');
   const [userCoordinates, setUserCoordinates] = useState<UserCoordinates | null>(null);
   const [isLocating, setIsLocating] = useState<boolean>(false);
@@ -71,6 +72,23 @@ export default function App() {
   useEffect(() => {
     localStorage.setItem('buscapreco_products', JSON.stringify(products));
   }, [products]);
+
+  // Mantém a barra de categorias (selectedDomain) sincronizada mesmo quando o
+  // usuário navega direto pelo menu principal (Veículos & Tabela FIPE,
+  // Eletrodomésticos), sem passar pela barra de categorias.
+  useEffect(() => {
+    if (activeTab === 'vehicles' && selectedDomain !== 'veiculos') {
+      setSelectedDomain('veiculos');
+    } else if (activeTab === 'appliances' && selectedDomain !== 'eletrodomesticos') {
+      setSelectedDomain('eletrodomesticos');
+    } else if (
+      activeTab === 'search' &&
+      (selectedDomain === 'veiculos' || selectedDomain === 'eletrodomesticos')
+    ) {
+      setSelectedDomain('supermercado');
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeTab]);
 
   const showToast = (msg: string) => {
     setToastMessage(msg);
@@ -281,15 +299,24 @@ export default function App() {
     showToast(`"${newProd.name}" adicionado com sucesso!`);
   };
 
+  // Controla a barra de categorias (Supermercados, Veículos & Automotivo,
+  // Farmácia & Saúde, Eletrônicos & Tech, Eletrodomésticos & Linha Branca,
+  // Casa & Construção) exibida no cabeçalho quando a aba Supermercados está ativa.
+  const handleSelectDomain = (domainId: string) => {
+    setSelectedDomain(domainId);
+    if (domainId === 'veiculos') {
+      setActiveTab('vehicles');
+    } else if (domainId === 'eletrodomesticos') {
+      setActiveTab('appliances');
+    } else {
+      setActiveTab('search');
+    }
+  };
+
   const handleNavigateToAiSearch = (query: string, explicitDomain?: string) => {
-    // Se a aba de origem já informou o domínio certo (ex: farmácia, eletrônicos,
-    // construção, dentro da própria aba Supermercados), usamos ele diretamente.
-    // Caso contrário, deduzimos pela aba principal ativa no momento.
-    const domain =
-      explicitDomain ||
-      (activeTab === 'vehicles' ? 'veiculos' :
-      activeTab === 'appliances' ? 'eletrodomesticos' :
-      'supermercado');
+    // O domínio explícito (vindo da barra de categorias) tem prioridade;
+    // caso não seja informado, usamos o selectedDomain atual como respaldo.
+    const domain = explicitDomain || selectedDomain || 'supermercado';
     setAiModalDomain(domain);
     setAiModalQuery(query);
   };
@@ -336,6 +363,9 @@ export default function App() {
         userCoordinates={userCoordinates}
         onRequestLocation={handleRequestLocation}
         isLocating={isLocating}
+        domainCategories={DOMAIN_CATEGORIES}
+        selectedDomain={selectedDomain}
+        onSelectDomain={handleSelectDomain}
       />
 
       {/* Main Content Area */}
@@ -353,6 +383,8 @@ export default function App() {
             onNavigateToRoutes={() => setActiveTab('routes')}
             onNavigateToVehicles={() => setActiveTab('vehicles')}
             onNavigateToAppliances={() => setActiveTab('appliances')}
+            selectedDomain={selectedDomain}
+            onSelectDomain={handleSelectDomain}
           />
         )}
 

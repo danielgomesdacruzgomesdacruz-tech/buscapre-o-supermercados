@@ -15,6 +15,13 @@ import {
 } from 'lucide-react';
 import { UserCoordinates } from '../utils/geolocation';
 
+interface DomainCategoryConfig {
+  id: string;
+  name: string;
+  icon: React.ElementType;
+  accentBg: string;
+}
+
 interface HeaderProps {
   activeTab: string;
   setActiveTab: (tab: string) => void;
@@ -24,6 +31,10 @@ interface HeaderProps {
   userCoordinates?: UserCoordinates | null;
   onRequestLocation?: () => void;
   isLocating?: boolean;
+  /** Categorias exibidas logo abaixo do título quando a aba Supermercados está ativa. */
+  domainCategories?: DomainCategoryConfig[];
+  selectedDomain?: string;
+  onSelectDomain?: (domainId: string) => void;
 }
 
 export const CITIES = [
@@ -149,6 +160,9 @@ export const Header: React.FC<HeaderProps> = ({
   userCoordinates,
   onRequestLocation,
   isLocating = false,
+  domainCategories,
+  selectedDomain,
+  onSelectDomain,
 }) => {
   const currentConfig = TAB_HEADER_CONFIGS[activeTab] || TAB_HEADER_CONFIGS.search;
   const ActiveIcon = currentConfig.icon;
@@ -259,6 +273,33 @@ export const Header: React.FC<HeaderProps> = ({
             </button>
           </div>
         </div>
+
+        {/* Domain Category Selector Tabs (só aparece na aba Supermercados) */}
+        {activeTab === 'search' && domainCategories && domainCategories.length > 0 && selectedDomain && onSelectDomain && (
+          <div className="pb-3">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-1.5 sm:gap-2 sm:overflow-x-auto no-scrollbar">
+              {domainCategories.map((domain) => {
+                const Icon = domain.icon;
+                const isSelected = selectedDomain === domain.id;
+                return (
+                  <button
+                    key={domain.id}
+                    id={`domain-tab-${domain.id}`}
+                    onClick={() => onSelectDomain(domain.id)}
+                    className={`w-full sm:w-auto flex items-center justify-start gap-2 px-3.5 py-2.5 rounded-xl text-xs font-extrabold tracking-wide transition-all cursor-pointer ${
+                      isSelected
+                        ? `${domain.accentBg} text-white shadow-sm ring-2 ring-stone-900/10 sm:scale-[1.02]`
+                        : 'bg-stone-50 hover:bg-stone-100 text-stone-900 border border-stone-200/80'
+                    }`}
+                  >
+                    <Icon className={`w-4 h-4 ${isSelected ? 'text-white' : 'text-stone-600'}`} />
+                    <span>{domain.name}</span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        )}
 
         {/* Navigation Tabs */}
         <nav className="flex space-x-1 overflow-x-auto no-scrollbar pt-1 border-t border-stone-100">

@@ -38,6 +38,10 @@ interface ProductSearchTabProps {
   onNavigateToRoutes?: () => void;
   onNavigateToVehicles?: () => void;
   onNavigateToAppliances?: () => void;
+  /** Domínio selecionado, controlado pela barra de categorias no cabeçalho (Header). */
+  selectedDomain: string;
+  /** Chamado quando o domínio é trocado pela barra de categorias no cabeçalho. */
+  onSelectDomain: (domainId: string) => void;
 }
 
 export interface DomainCategoryConfig {
@@ -195,8 +199,9 @@ export const ProductSearchTab: React.FC<ProductSearchTabProps> = ({
   onNavigateToRoutes,
   onNavigateToVehicles,
   onNavigateToAppliances,
+  selectedDomain,
+  onSelectDomain,
 }) => {
-  const [selectedDomain, setSelectedDomain] = useState<string>('supermercado');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('todos');
   const [selectedSupermarkets, setSelectedSupermarkets] = useState<string[]>([]);
@@ -206,15 +211,15 @@ export const ProductSearchTab: React.FC<ProductSearchTabProps> = ({
     return DOMAIN_CATEGORIES.find((d) => d.id === selectedDomain) || DOMAIN_CATEGORIES[0];
   }, [selectedDomain]);
 
-  const handleSelectDomain = (domainId: string) => {
-    setSelectedDomain(domainId);
-    setSelectedCategory('todos');
-    if (domainId === 'veiculos' && onNavigateToVehicles) {
-      onNavigateToVehicles();
-    } else if (domainId === 'eletrodomesticos' && onNavigateToAppliances) {
-      onNavigateToAppliances();
+  // A barra de categorias agora vive no Header; quando o domínio muda (vindo
+  // de lá), resetamos a categoria interna selecionada para "todos".
+  const previousDomainRef = React.useRef(selectedDomain);
+  if (previousDomainRef.current !== selectedDomain) {
+    previousDomainRef.current = selectedDomain;
+    if (selectedCategory !== 'todos') {
+      setSelectedCategory('todos');
     }
-  };
+  }
 
   const toggleSupermarket = (id: string) => {
     setSelectedSupermarkets((prev) =>
@@ -298,33 +303,6 @@ export const ProductSearchTab: React.FC<ProductSearchTabProps> = ({
 
   return (
     <div className="space-y-6">
-      {/* Domain Category Selector Tabs */}
-      <div className="bg-white border border-stone-200 rounded-2xl p-2 shadow-xs">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1.5 sm:gap-2 sm:overflow-x-auto no-scrollbar sm:pb-0.5">
-          <div className="flex flex-col sm:flex-row sm:items-center gap-1.5 sm:min-w-max">
-            {DOMAIN_CATEGORIES.map((domain) => {
-              const Icon = domain.icon;
-              const isSelected = selectedDomain === domain.id;
-              return (
-                <button
-                  key={domain.id}
-                  id={`domain-tab-${domain.id}`}
-                  onClick={() => handleSelectDomain(domain.id)}
-                  className={`w-full sm:w-auto flex items-center justify-start gap-2 px-3.5 py-2.5 rounded-xl text-xs font-extrabold tracking-wide transition-all cursor-pointer ${
-                    isSelected
-                      ? `${domain.accentBg} text-white shadow-sm ring-2 ring-stone-900/10 sm:scale-[1.02]`
-                      : 'bg-stone-50 hover:bg-stone-100 text-stone-900 border border-stone-200/80'
-                  }`}
-                >
-                  <Icon className={`w-4 h-4 ${isSelected ? 'text-white' : 'text-stone-600'}`} />
-                  <span>{domain.name}</span>
-                </button>
-              );
-            })}
-          </div>
-        </div>
-      </div>
-
       {/* When Vehicle domain is active, render dedicated VehiclesTab */}
       {selectedDomain === 'veiculos' ? (
         <VehiclesTab
@@ -353,12 +331,7 @@ export const ProductSearchTab: React.FC<ProductSearchTabProps> = ({
               </div>
               <button
                 type="button"
-                onClick={() => {
-                  setSelectedDomain('veiculos');
-                  if (onNavigateToVehicles) {
-                    onNavigateToVehicles();
-                  }
-                }}
+                onClick={() => onSelectDomain('veiculos')}
                 className="bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs px-4 py-2.5 rounded-xl transition shadow-xs whitespace-nowrap cursor-pointer flex items-center gap-1.5 shrink-0"
               >
                 <Car className="w-3.5 h-3.5" />
@@ -559,7 +532,7 @@ export const ProductSearchTab: React.FC<ProductSearchTabProps> = ({
                 {isVehicleQuery && (
                   <button
                     type="button"
-                    onClick={() => setSelectedDomain('veiculos')}
+                    onClick={() => onSelectDomain('veiculos')}
                     className="bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow-xs inline-flex items-center gap-1.5 transition cursor-pointer"
                   >
                     <Car className="w-4 h-4" />
