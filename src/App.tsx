@@ -281,11 +281,15 @@ export default function App() {
     showToast(`"${newProd.name}" adicionado com sucesso!`);
   };
 
-  const handleNavigateToAiSearch = (query: string) => {
+  const handleNavigateToAiSearch = (query: string, explicitDomain?: string) => {
+    // Se a aba de origem já informou o domínio certo (ex: farmácia, eletrônicos,
+    // construção, dentro da própria aba Supermercados), usamos ele diretamente.
+    // Caso contrário, deduzimos pela aba principal ativa no momento.
     const domain =
-      activeTab === 'vehicles' ? 'veiculos' :
+      explicitDomain ||
+      (activeTab === 'vehicles' ? 'veiculos' :
       activeTab === 'appliances' ? 'eletrodomesticos' :
-      'supermercado';
+      'supermercado');
     setAiModalDomain(domain);
     setAiModalQuery(query);
   };

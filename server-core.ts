@@ -479,8 +479,23 @@ app.post("/api/ai/search-price", async (req, res) => {
         storeExamples: "Magazine Luiza, Casas Bahia, Fast Shop, Amazon, Mercado Livre ou lojas oficiais da marca",
         categories: '"eletrodomesticos"',
       },
+      farmacia: {
+        context: "medicamentos, produtos de saúde e higiene pessoal",
+        storeExamples: "Droga Raia, Drogasil, Pacheco, Pague Menos, Panvel ou farmácias locais",
+        categories: '"farmacia"',
+      },
+      eletronicos: {
+        context: "celulares, notebooks e acessórios eletrônicos",
+        storeExamples: "Magazine Luiza, Kabum, Amazon, Fast Shop, Casas Bahia ou lojas oficiais da marca",
+        categories: '"eletronicos"',
+      },
+      construcao: {
+        context: "materiais de construção e ferramentas",
+        storeExamples: "Leroy Merlin, C&C, Telhanorte, Tumelero ou lojas de material de construção locais",
+        categories: '"construcao"',
+      },
       supermercado: {
-        context: "produtos de supermercado, farmácia, eletrônicos ou material de construção",
+        context: "produtos de supermercado (alimentos, bebidas, limpeza, higiene)",
         storeExamples: "Assaí Atacadista, Atacadão, Carrefour, Pão de Açúcar, supermercados locais",
         categories: '"alimentos", "bebidas", "carnes", "hortifruti", "laticinios", "limpeza", "higiene", "padaria"',
       },

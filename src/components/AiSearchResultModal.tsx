@@ -110,48 +110,111 @@ export const AiSearchResultModal: React.FC<AiSearchResultModalProps> = ({
         if (cancelled) return;
         console.error('Erro na busca por IA:', err);
 
-        const isVeiculos = domain === 'veiculos';
-        const isEletro = domain === 'eletrodomesticos';
-        const basePrice = isVeiculos ? 79900.0 : isEletro ? 2199.0 : 19.8;
-        const lowest = +(basePrice * 0.92).toFixed(2);
-        const highest = +(basePrice * 1.18).toFixed(2);
+        type DomainFallbackConfig = {
+          basePrice: number;
+          category: string;
+          brand: string;
+          volumeOrWeight: string;
+          summary: (lowest: number, city: string) => string;
+          stores: (lowest: number, base: number, highest: number) => { supermarketName: string; estimatedPrice: number; dealType: string; notes: string }[];
+        };
 
-        const fallbackMarkets = isVeiculos
-          ? [
+        const domainFallbacks: Record<string, DomainFallbackConfig> = {
+          veiculos: {
+            basePrice: 79900.0,
+            category: 'veiculos',
+            brand: 'Diversas Marcas',
+            volumeOrWeight: '1 un',
+            summary: (lowest, city) => `Comparando concessionárias e revendas em ${city}, o menor valor estimado é de R$ ${lowest.toFixed(2).replace('.', ',')}.`,
+            stores: (lowest, base, highest) => [
               { supermarketName: 'Concessionária Oficial', estimatedPrice: lowest, dealType: 'Taxa 0% em 24x', notes: 'Menor preço estimado' },
               { supermarketName: 'Auto Shopping', estimatedPrice: +(lowest * 1.03).toFixed(2), dealType: 'Seminovo Revisado', notes: 'Boa procedência' },
-              { supermarketName: 'Revenda Multimarcas', estimatedPrice: basePrice, dealType: 'Financiamento facilitado', notes: 'Diversas opções de cor' },
+              { supermarketName: 'Revenda Multimarcas', estimatedPrice: base, dealType: 'Financiamento facilitado', notes: 'Diversas opções de cor' },
               { supermarketName: 'Revenda Premium', estimatedPrice: highest, dealType: 'Garantia Estendida', notes: 'Linha completa' },
-            ]
-          : isEletro
-          ? [
+            ],
+          },
+          eletrodomesticos: {
+            basePrice: 2199.0,
+            category: 'eletrodomesticos',
+            brand: 'Diversas Marcas',
+            volumeOrWeight: '1 un',
+            summary: (lowest, city) => `Comparando grandes varejos em ${city}, o menor valor estimado é de R$ ${lowest.toFixed(2).replace('.', ',')}, geralmente à vista no Pix.`,
+            stores: (lowest, base, highest) => [
               { supermarketName: 'Magazine Luiza', estimatedPrice: lowest, dealType: '10% OFF no Pix', notes: 'Menor preço estimado' },
               { supermarketName: 'Casas Bahia', estimatedPrice: +(lowest * 1.03).toFixed(2), dealType: 'Parcelamento sem juros', notes: 'Retirada em loja' },
-              { supermarketName: 'Fast Shop', estimatedPrice: basePrice, dealType: 'Garantia Estendida', notes: 'Linha Premium' },
+              { supermarketName: 'Fast Shop', estimatedPrice: base, dealType: 'Garantia Estendida', notes: 'Linha Premium' },
               { supermarketName: 'Amazon / Mercado Livre', estimatedPrice: highest, dealType: 'Entrega Rápida', notes: 'Comparar cupons online' },
-            ]
-          : [
+            ],
+          },
+          farmacia: {
+            basePrice: 34.9,
+            category: 'farmacia',
+            brand: 'Diversas Marcas',
+            volumeOrWeight: 'Embalagem Padrão',
+            summary: (lowest, city) => `Comparando farmácias em ${city}, o menor valor estimado é de R$ ${lowest.toFixed(2).replace('.', ',')}, geralmente com desconto no app.`,
+            stores: (lowest, base, highest) => [
+              { supermarketName: 'Droga Raia', estimatedPrice: lowest, dealType: 'Desconto no app', notes: 'Menor preço estimado' },
+              { supermarketName: 'Drogasil', estimatedPrice: +(lowest * 1.03).toFixed(2), dealType: 'Programa de Fidelidade', notes: 'Acumula pontos' },
+              { supermarketName: 'Pague Menos', estimatedPrice: base, dealType: 'Preço Direto', notes: 'Rede com boa cobertura' },
+              { supermarketName: 'Panvel', estimatedPrice: highest, dealType: 'Preço Balcão', notes: 'Atendimento farmacêutico' },
+            ],
+          },
+          eletronicos: {
+            basePrice: 1899.0,
+            category: 'eletronicos',
+            brand: 'Diversas Marcas',
+            volumeOrWeight: '1 un',
+            summary: (lowest, city) => `Comparando lojas de eletrônicos em ${city}, o menor valor estimado é de R$ ${lowest.toFixed(2).replace('.', ',')}.`,
+            stores: (lowest, base, highest) => [
+              { supermarketName: 'Kabum', estimatedPrice: lowest, dealType: 'Cupom de desconto', notes: 'Menor preço estimado' },
+              { supermarketName: 'Magazine Luiza', estimatedPrice: +(lowest * 1.03).toFixed(2), dealType: '10% OFF no Pix', notes: 'Frete grátis' },
+              { supermarketName: 'Amazon', estimatedPrice: base, dealType: 'Entrega Rápida', notes: 'Comparar cupons online' },
+              { supermarketName: 'Fast Shop', estimatedPrice: highest, dealType: 'Garantia Estendida', notes: 'Linha Premium' },
+            ],
+          },
+          construcao: {
+            basePrice: 149.9,
+            category: 'construcao',
+            brand: 'Diversas Marcas',
+            volumeOrWeight: '1 un',
+            summary: (lowest, city) => `Comparando lojas de material de construção em ${city}, o menor valor estimado é de R$ ${lowest.toFixed(2).replace('.', ',')}.`,
+            stores: (lowest, base, highest) => [
+              { supermarketName: 'Leroy Merlin', estimatedPrice: lowest, dealType: 'Preço Direto', notes: 'Menor preço estimado' },
+              { supermarketName: 'C&C', estimatedPrice: +(lowest * 1.03).toFixed(2), dealType: 'Entrega Programada', notes: 'Bom estoque local' },
+              { supermarketName: 'Telhanorte', estimatedPrice: base, dealType: 'Parcelamento sem juros', notes: 'Boa variedade' },
+              { supermarketName: 'Tumelero', estimatedPrice: highest, dealType: 'Preço Balcão', notes: 'Atendimento especializado' },
+            ],
+          },
+          supermercado: {
+            basePrice: 19.8,
+            category: 'alimentos',
+            brand: 'Mais Popular',
+            volumeOrWeight: 'Embalagem Padrão',
+            summary: (lowest, city) => `Em atacarejos (como Assaí e Atacadão) em ${city}, este item costuma ter descontos de até 22% comprando em maior quantidade.`,
+            stores: (lowest, base, highest) => [
               { supermarketName: 'Assaí Atacadista', estimatedPrice: lowest, dealType: 'Atacado / Oferta', notes: 'Menor preço estimado' },
               { supermarketName: 'Atacadão', estimatedPrice: +(lowest * 1.03).toFixed(2), dealType: 'Preço Direto', notes: 'Excelente custo-benefício' },
-              { supermarketName: 'Carrefour Hiper', estimatedPrice: basePrice, dealType: 'Clube Meu Carrefour', notes: 'Desconto com app' },
+              { supermarketName: 'Carrefour Hiper', estimatedPrice: base, dealType: 'Clube Meu Carrefour', notes: 'Desconto com app' },
               { supermarketName: 'Pão de Açúcar', estimatedPrice: highest, dealType: 'Preço Balcão', notes: 'Linha Premium' },
-            ];
+            ],
+          },
+        };
+
+        const cfg = domainFallbacks[domain || 'supermercado'] || domainFallbacks.supermercado;
+        const lowest = +(cfg.basePrice * 0.92).toFixed(2);
+        const highest = +(cfg.basePrice * 1.18).toFixed(2);
 
         setResult({
           productName: q,
-          brand: isVeiculos || isEletro ? 'Diversas Marcas' : 'Mais Popular',
-          category: isVeiculos ? 'veiculos' : isEletro ? 'eletrodomesticos' : 'alimentos',
+          brand: cfg.brand,
+          category: cfg.category,
           unit: 'un',
-          volumeOrWeight: isVeiculos || isEletro ? '1 un' : 'Embalagem Padrão',
-          averagePrice: basePrice,
+          volumeOrWeight: cfg.volumeOrWeight,
+          averagePrice: cfg.basePrice,
           lowestPrice: lowest,
           highestPrice: highest,
-          priceSummary: isVeiculos
-            ? `Comparando concessionárias e revendas em ${selectedCity}, o menor valor estimado é de R$ ${lowest.toFixed(2).replace('.', ',')}.`
-            : isEletro
-            ? `Comparando grandes varejos em ${selectedCity}, o menor valor estimado é de R$ ${lowest.toFixed(2).replace('.', ',')}, geralmente à vista no Pix.`
-            : `Em atacarejos (como Assaí e Atacadão) em ${selectedCity}, este item costuma ter descontos de até 22% comprando em maior quantidade.`,
-          marketPrices: fallbackMarkets,
+          priceSummary: cfg.summary(lowest, selectedCity),
+          marketPrices: cfg.stores(lowest, cfg.basePrice, highest),
         });
       } finally {
         if (!cancelled) setLoading(false);
@@ -240,6 +303,12 @@ export const AiSearchResultModal: React.FC<AiSearchResultModalProps> = ({
                   ? 'Analisando concessionárias, auto shoppings e revendas'
                   : domain === 'eletrodomesticos'
                   ? 'Analisando grandes varejos e lojas oficiais'
+                  : domain === 'farmacia'
+                  ? 'Analisando farmácias e drogarias'
+                  : domain === 'eletronicos'
+                  ? 'Analisando lojas de eletrônicos e marketplaces'
+                  : domain === 'construcao'
+                  ? 'Analisando lojas de material de construção'
                   : 'Analisando atacarejos, hipermercados e redes locais'}
               </p>
             </div>
