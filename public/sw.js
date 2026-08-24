@@ -1,11 +1,16 @@
 // Service Worker for BuscaPreço PWA
-const CACHE_NAME = 'buscapreco-cache-v1';
+//
+// v2: Corrige atualização automática. O HTML principal (a "casca" do app)
+// agora usa estratégia "rede primeiro" — sempre busca a versão mais nova do
+// servidor antes de considerar o cache, e só usa o cache guardado se o
+// usuário estiver offline. Arquivos com hash no nome (gerados pelo build do
+// Vite, ex: index-abc123.js) continuam em cache-first, pois são imutáveis
+// por natureza (o nome muda a cada build).
+const CACHE_NAME = 'buscapreco-cache-v2';
 const ASSETS_TO_CACHE = [
-  '/',
-  '/index.html',
   '/manifest.webmanifest',
   '/icon-192.svg',
-  '/icon-512.svg'
+  '/icon-512.svg',
 ];
 
 self.addEventListener('install', (event) => {
@@ -39,7 +44,37 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Stale-while-revalidate strategy for same-origin assets
+  const url = new URL(event.request.url);
+  const isAppShell =
+    event.request.mode === 'navigate' ||
+    url.pathname === '/' ||
+    url.pathname === '/index.html';
+
+  if (isAppShell) {
+    // Rede primeiro: garante que o usuário sempre receba a versão mais
+    // recente do app assim que ela for publicada. Só cai para o cache se
+    // estiver offline.
+    event.respondWith(
+      fetch(event.request)
+        .then((networkResponse) => {
+          if (networkResponse && networkResponse.status === 200) {
+            const clone = networkResponse.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
+          }
+          return networkResponse;
+        })
+        .catch(() =>
+          caches.open(CACHE_NAME).then((cache) =>
+            cache.match(event.request).then((cached) => cached || cache.match('/'))
+          )
+        )
+    );
+    return;
+  }
+
+  // Demais arquivos (JS/CSS com hash no nome, imagens, etc.): cache primeiro,
+  // com atualização em segundo plano — seguro porque o nome do arquivo muda
+  // a cada novo build.
   event.respondWith(
     caches.open(CACHE_NAME).then((cache) => {
       return cache.match(event.request).then((cachedResponse) => {
@@ -48,13 +83,7 @@ self.addEventListener('fetch', (event) => {
             cache.put(event.request, networkResponse.clone());
           }
           return networkResponse;
-        }).catch(() => {
-          // If offline and request is navigation, return cached /
-          if (event.request.mode === 'navigate') {
-            return cache.match('/');
-          }
-          return cachedResponse;
-        });
+        }).catch(() => cachedResponse);
 
         return cachedResponse || fetchPromise;
       });

@@ -38,6 +38,17 @@
               console.log('[BuscaPreço PWA] Falha ao registrar Service Worker:', err);
             });
         });
+
+        // Quando uma nova versão do Service Worker assume o controle da página
+        // (por exemplo, depois de um novo deploy), recarrega a página automaticamente
+        // uma única vez para que o usuário sempre veja a versão mais recente do app,
+        // sem precisar fechar e abrir de novo manualmente.
+        let hasReloaded = false;
+        navigator.serviceWorker.addEventListener('controllerchange', () => {
+          if (hasReloaded) return;
+          hasReloaded = true;
+          window.location.reload();
+        });
       }
     </script>
   </body>
