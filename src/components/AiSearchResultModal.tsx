@@ -236,7 +236,11 @@ export const AiSearchResultModal: React.FC<AiSearchResultModalProps> = ({
                 Consultando faixa de preços e ofertas em {selectedCity}...
               </h4>
               <p className="text-xs text-stone-500 mt-1">
-                Analisando atacarejos, hipermercados e redes locais
+                {domain === 'veiculos'
+                  ? 'Analisando concessionárias, auto shoppings e revendas'
+                  : domain === 'eletrodomesticos'
+                  ? 'Analisando grandes varejos e lojas oficiais'
+                  : 'Analisando atacarejos, hipermercados e redes locais'}
               </p>
             </div>
           ) : result ? (
@@ -307,7 +311,7 @@ export const AiSearchResultModal: React.FC<AiSearchResultModalProps> = ({
                   <div>
                     <h4 className="text-sm font-bold text-stone-900 flex items-center gap-1.5">
                       <Store className="w-4 h-4 text-emerald-600" />
-                      Estimativa por Rede, Melhor Rota & Distância
+                      Estimativa por Loja, Melhor Rota & Distância
                     </h4>
                     <p className="text-xs text-stone-500">
                       Valores estimados, rota mais rápida e distância em tempo real em {selectedCity}
