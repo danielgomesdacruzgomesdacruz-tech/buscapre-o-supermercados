@@ -6,7 +6,7 @@
 // usuário estiver offline. Arquivos com hash no nome (gerados pelo build do
 // Vite, ex: index-abc123.js) continuam em cache-first, pois são imutáveis
 // por natureza (o nome muda a cada build).
-const CACHE_NAME = 'buscapreco-cache-v2';
+const CACHE_NAME = 'buscapreco-cache-v3';
 const ASSETS_TO_CACHE = [
   '/manifest.webmanifest',
   '/icon-192.svg',
@@ -52,10 +52,12 @@ self.addEventListener('fetch', (event) => {
 
   if (isAppShell) {
     // Rede primeiro: garante que o usuário sempre receba a versão mais
-    // recente do app assim que ela for publicada. Só cai para o cache se
-    // estiver offline.
+    // recente do app assim que ela for publicada. "cache: no-store" força o
+    // navegador a ignorar qualquer cache HTTP intermediário (não só o do
+    // Service Worker) e buscar a página realmente fresca do servidor. Só cai
+    // para o cache guardado se estiver offline.
     event.respondWith(
-      fetch(event.request)
+      fetch(event.request, { cache: 'no-store' })
         .then((networkResponse) => {
           if (networkResponse && networkResponse.status === 200) {
             const clone = networkResponse.clone();
