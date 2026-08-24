@@ -300,8 +300,8 @@ export const ProductSearchTab: React.FC<ProductSearchTabProps> = ({
     <div className="space-y-6">
       {/* Domain Category Selector Tabs */}
       <div className="bg-white border border-stone-200 rounded-2xl p-2 shadow-xs">
-        <div className="flex items-center justify-between gap-2 overflow-x-auto no-scrollbar pb-0.5">
-          <div className="flex items-center gap-1.5 min-w-max">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1.5 sm:gap-2 sm:overflow-x-auto no-scrollbar sm:pb-0.5">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-1.5 sm:min-w-max">
             {DOMAIN_CATEGORIES.map((domain) => {
               const Icon = domain.icon;
               const isSelected = selectedDomain === domain.id;
@@ -310,9 +310,9 @@ export const ProductSearchTab: React.FC<ProductSearchTabProps> = ({
                   key={domain.id}
                   id={`domain-tab-${domain.id}`}
                   onClick={() => handleSelectDomain(domain.id)}
-                  className={`flex items-center gap-2 px-3.5 py-2.5 rounded-xl text-xs font-extrabold tracking-wide transition-all cursor-pointer ${
+                  className={`w-full sm:w-auto flex items-center justify-start gap-2 px-3.5 py-2.5 rounded-xl text-xs font-extrabold tracking-wide transition-all cursor-pointer ${
                     isSelected
-                      ? `${domain.accentBg} text-white shadow-sm ring-2 ring-stone-900/10 scale-[1.02]`
+                      ? `${domain.accentBg} text-white shadow-sm ring-2 ring-stone-900/10 sm:scale-[1.02]`
                       : 'bg-stone-50 hover:bg-stone-100 text-stone-900 border border-stone-200/80'
                   }`}
                 >
