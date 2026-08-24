@@ -310,13 +310,13 @@ export const ProductSearchTab: React.FC<ProductSearchTabProps> = ({
                   key={domain.id}
                   id={`domain-tab-${domain.id}`}
                   onClick={() => handleSelectDomain(domain.id)}
-                  className={`flex items-center gap-2 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                  className={`flex items-center gap-2 px-3.5 py-2.5 rounded-xl text-xs font-extrabold tracking-wide transition-all cursor-pointer ${
                     isSelected
                       ? `${domain.accentBg} text-white shadow-sm ring-2 ring-stone-900/10 scale-[1.02]`
-                      : 'bg-stone-50 hover:bg-stone-100 text-stone-700 border border-stone-200/80'
+                      : 'bg-stone-50 hover:bg-stone-100 text-stone-900 border border-stone-200/80'
                   }`}
                 >
-                  <Icon className={`w-4 h-4 ${isSelected ? 'text-white' : 'text-stone-500'}`} />
+                  <Icon className={`w-4 h-4 ${isSelected ? 'text-white' : 'text-stone-600'}`} />
                   <span>{domain.name}</span>
                 </button>
               );
