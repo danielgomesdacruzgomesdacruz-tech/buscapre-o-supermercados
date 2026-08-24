@@ -65,7 +65,7 @@ async function generateContentWithFallback(options: {
 }
 
 // Realistic Brazilian Market Heuristic Fallback Generator for Product Search
-function generateSmartMarketEstimates(query: string, city: string) {
+function generateSmartMarketEstimates(query: string, city: string, domainHint?: string) {
   const cleanQ = query.trim();
   const lower = cleanQ.toLowerCase();
 
@@ -165,6 +165,17 @@ function generateSmartMarketEstimates(query: string, city: string) {
     unit = "un";
     basePrice = 469.00;
     brand = lower.includes("heliar") ? "Heliar" : "Moura";
+  } else if (
+    lower.includes("geladeira") || lower.includes("lavadora") || lower.includes("lava e seca") ||
+    lower.includes("air fryer") || lower.includes("micro-ondas") || lower.includes("microondas") ||
+    lower.includes("fogão") || lower.includes("fogao") || lower.includes("lava-louças") || lower.includes("lava louças") ||
+    lower.includes("ar-condicionado") || lower.includes("ar condicionado") || lower.includes("aspirador")
+  ) {
+    category = "eletrodomesticos";
+    volumeOrWeight = "1 un";
+    unit = "un";
+    basePrice = 2199.00;
+    brand = "Brastemp / Electrolux / Consul";
   } else if (lower.includes("veiculo") || lower.includes("veículo") || lower.includes("carro") || lower.includes("onix") || lower.includes("hb20") || lower.includes("polo") || lower.includes("gol")) {
     category = "veiculos";
     volumeOrWeight = "1 un";
@@ -173,12 +184,72 @@ function generateSmartMarketEstimates(query: string, city: string) {
     brand = "Chevrolet / Hyundai / VW";
   }
 
+  // O domínio informado pela aba de origem tem prioridade sobre a detecção por palavra-chave,
+  // já que é muito mais confiável (evita categorizar errado quando o texto é ambíguo).
+  if (domainHint === "veiculos" && category !== "veiculos") {
+    category = "veiculos";
+    volumeOrWeight = "1 un";
+    unit = "un";
+    basePrice = 79900.00;
+    if (brand === "Mais Popular") brand = "Chevrolet / Hyundai / VW";
+  } else if (domainHint === "eletrodomesticos" && category !== "eletrodomesticos") {
+    category = "eletrodomesticos";
+    volumeOrWeight = "1 un";
+    unit = "un";
+    basePrice = 2199.00;
+    if (brand === "Mais Popular") brand = "Brastemp / Electrolux / Consul";
+  }
+
   const isVehicleOrAuto = ["combustivel", "pneus_rodas", "oleos_fluidos", "baterias_eletrica", "veiculos"].includes(category);
+  const isAppliance = category === "eletrodomesticos";
   const lowestPrice = +(basePrice * 0.92).toFixed(2);
   const averagePrice = +basePrice.toFixed(2);
   const highestPrice = +(basePrice * 1.18).toFixed(2);
 
-  const marketPrices = isVehicleOrAuto
+  const marketPrices = isAppliance
+    ? [
+        {
+          supermarketName: "Magazine Luiza",
+          estimatedPrice: lowestPrice,
+          dealType: "10% OFF no Pix",
+          notes: "Frete grátis para a região",
+          distanceKm: 3.5,
+          durationMin: 9,
+          bestRoute: "Via Av. Paulista • Rota mais rápida",
+          address: "Av. Paulista, 900 - Bela Vista",
+        },
+        {
+          supermarketName: "Casas Bahia",
+          estimatedPrice: +(lowestPrice * 1.03).toFixed(2),
+          dealType: "Parcelamento sem juros",
+          notes: "Retirada em loja física",
+          distanceKm: 4.1,
+          durationMin: 10,
+          bestRoute: "Via Av. Ibirapuera • Trânsito Livre",
+          address: "Av. Ibirapuera, 3103 - Indianópolis",
+        },
+        {
+          supermarketName: "Fast Shop",
+          estimatedPrice: averagePrice,
+          dealType: "Garantia Estendida Inclusa",
+          notes: "Linha Premium & Instalação",
+          distanceKm: 2.6,
+          durationMin: 7,
+          bestRoute: "Via Av. Rebouças • Acesso Fácil",
+          address: "Av. Rebouças, 3970 - Pinheiros",
+        },
+        {
+          supermarketName: "Amazon / Mercado Livre",
+          estimatedPrice: highestPrice,
+          dealType: "Entrega Rápida Full",
+          notes: "Melhor para comparar cupons online",
+          distanceKm: 0,
+          durationMin: 0,
+          bestRoute: "Entrega — sem deslocamento necessário",
+          address: "Compra online",
+        },
+      ]
+    : isVehicleOrAuto
     ? [
         {
           supermarketName: "Posto Shell & Shell Box",
@@ -273,7 +344,9 @@ function generateSmartMarketEstimates(query: string, city: string) {
     averagePrice,
     lowestPrice,
     highestPrice,
-    priceSummary: isVehicleOrAuto
+    priceSummary: isAppliance
+      ? `Comparando grandes varejos online e físicos em ${city}, o menor valor estimado é de R$ ${lowestPrice.toFixed(2).replace(".", ",")}, geralmente à vista no Pix.`
+      : isVehicleOrAuto
       ? `Comparando postos e auto centers em ${city}, o menor valor estimado é de R$ ${lowestPrice.toFixed(2).replace(".", ",")}.`
       : `Em atacarejos (Assaí, Atacadão) em ${city}, comprando 3 ou mais unidades o valor cai para cerca de R$ ${lowestPrice.toFixed(2).replace(".", ",")}.`,
     marketPrices,
@@ -387,7 +460,7 @@ Se for apenas uma etiqueta de gôndola isolada, extraia o nome do produto e o pr
 // Endpoint: AI Search Product Prices (Live Knowledge & Estimates)
 app.post("/api/ai/search-price", async (req, res) => {
   try {
-    const { query, city = "São Paulo, SP" } = req.body;
+    const { query, city = "São Paulo, SP", domain } = req.body;
 
     if (!query || !query.trim()) {
       return res.status(400).json({ error: "Termo de busca obrigatório." });
@@ -395,24 +468,44 @@ app.post("/api/ai/search-price", async (req, res) => {
 
     const cleanQuery = query.trim();
 
-    const prompt = `Você é um especialista em comparação de preços de supermercados no Brasil.
-Pesquise ou estime a faixa de preços atual e comparativo para o produto: "${cleanQuery}" na região de ${city}.
+    const domainConfig: Record<string, { context: string; storeExamples: string; categories: string }> = {
+      veiculos: {
+        context: "veículos novos e seminovos (carros, motos)",
+        storeExamples: "concessionárias oficiais, auto shoppings, revendas de seminovos multimarcas ou revendas premium",
+        categories: '"veiculos"',
+      },
+      eletrodomesticos: {
+        context: "eletrodomésticos e linha branca",
+        storeExamples: "Magazine Luiza, Casas Bahia, Fast Shop, Amazon, Mercado Livre ou lojas oficiais da marca",
+        categories: '"eletrodomesticos"',
+      },
+      supermercado: {
+        context: "produtos de supermercado, farmácia, eletrônicos ou material de construção",
+        storeExamples: "Assaí Atacadista, Atacadão, Carrefour, Pão de Açúcar, supermercados locais",
+        categories: '"alimentos", "bebidas", "carnes", "hortifruti", "laticinios", "limpeza", "higiene", "padaria"',
+      },
+    };
 
-Forneça uma análise comparativa realista entre as principais redes da região (Ex: Assaí Atacadista, Atacadão, Carrefour, Pão de Açúcar, Supermercados locais) em formato JSON com a seguinte estrutura:
+    const cfg = domainConfig[domain as string] || domainConfig.supermercado;
+
+    const prompt = `Você é um especialista em comparação de preços no Brasil, especializado em ${cfg.context}.
+Pesquise ou estime a faixa de preços atual e comparativo para: "${cleanQuery}" na região de ${city}.
+
+Forneça uma análise comparativa realista entre as principais lojas/redes da região (Ex: ${cfg.storeExamples}) em formato JSON com a seguinte estrutura:
 - productName: Nome padronizado do produto
 - brand: Marca principal ou mais comum
-- category: Categoria ("alimentos", "bebidas", "carnes", "hortifruti", "laticinios", "limpeza", "higiene", "padaria")
+- category: Categoria (${cfg.categories})
 - unit: Unidade de medida (kg, g, L, ml, un)
-- volumeOrWeight: Peso ou volume típico (ex: 5kg, 1L, 500g)
+- volumeOrWeight: Peso, volume ou especificação típica (ex: 5kg, 1L, 500g, "1 un")
 - averagePrice: Preço médio praticado na cidade
 - lowestPrice: Menor preço encontrado ou estimado
 - highestPrice: Maior preço encontrado ou estimado
-- priceSummary: Breve dica de economia (ex: "Em atacarejos como Assaí ou Atacadão, o pacote sai cerca de 18% mais barato levando 3+ unidades.")
-- marketPrices: Lista de 4 a 6 redes de supermercados com seus respectivos preços estimados ou praticados:
-  - supermarketName: Nome da rede
+- priceSummary: Breve dica de economia, coerente com o tipo de loja usado nos exemplos acima
+- marketPrices: Lista de 4 a 6 lojas/redes reais e coerentes com o contexto acima, com seus respectivos preços estimados ou praticados:
+  - supermarketName: Nome da loja ou rede (mesmo não sendo supermercado, use este campo)
   - estimatedPrice: Preço estimado em R$
-  - dealType: Tipo de preço ("Preço Normal", "Clube Fidelidade", "Atacado 3+ un", "Oferta do Dia")
-  - notes: Dica específica (ex: "Preço no app Meu Carrefour", "Desconto no fardo")
+  - dealType: Tipo de preço/condição (ex: "Preço Normal", "Clube Fidelidade", "10% no Pix", "Financiamento", "Oferta do Dia")
+  - notes: Dica específica sobre essa loja
   - distanceKm: Distância estimada em km a partir de um ponto central ou residencial típico (número decimal, ex: 2.8)
   - durationMin: Tempo aproximado de deslocamento de carro em minutos (número inteiro, ex: 8)
   - bestRoute: Descrição da melhor rota ou via principal (ex: "Via Av. das Nações Unidas • Rota mais rápida", "Via Av. Paulista", "Via Corredor Norte-Sul")
@@ -462,12 +555,12 @@ Forneça uma análise comparativa realista entre as principais redes da região 
       return res.json({ success: true, data: parsed });
     } catch (aiErr: any) {
       console.warn(`[Fallback] Gemini indisponível para busca ("${cleanQuery}"). Usando estimativa heurística local inteligente:`, aiErr?.message);
-      const fallbackData = generateSmartMarketEstimates(cleanQuery, city);
+      const fallbackData = generateSmartMarketEstimates(cleanQuery, city, domain);
       return res.json({ success: true, data: fallbackData, fallback: true });
     }
   } catch (error: any) {
     console.error("Erro geral na busca de preços:", error);
-    const safeFallback = generateSmartMarketEstimates(req.body?.query || "Produto", req.body?.city || "São Paulo, SP");
+    const safeFallback = generateSmartMarketEstimates(req.body?.query || "Produto", req.body?.city || "São Paulo, SP", req.body?.domain);
     res.json({ success: true, data: safeFallback, fallback: true });
   }
 });

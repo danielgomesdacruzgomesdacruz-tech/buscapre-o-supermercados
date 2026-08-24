@@ -56,6 +56,7 @@ export default function App() {
   });
 
   const [aiModalQuery, setAiModalQuery] = useState<string | null>(null);
+  const [aiModalDomain, setAiModalDomain] = useState<string>('supermercado');
   const [historyModalProduct, setHistoryModalProduct] = useState<Product | null>(null);
   const [alertModalProduct, setAlertModalProduct] = useState<Product | null>(null);
   const [alerts, setAlerts] = useState<PriceAlert[]>([]);
@@ -281,6 +282,11 @@ export default function App() {
   };
 
   const handleNavigateToAiSearch = (query: string) => {
+    const domain =
+      activeTab === 'vehicles' ? 'veiculos' :
+      activeTab === 'appliances' ? 'eletrodomesticos' :
+      'supermercado';
+    setAiModalDomain(domain);
     setAiModalQuery(query);
   };
 
@@ -455,6 +461,7 @@ export default function App() {
       {/* Modal de resultado da Pesquisa com IA, aberto a partir de qualquer aba */}
       <AiSearchResultModal
         query={aiModalQuery}
+        domain={aiModalDomain}
         selectedCity={selectedCity}
         onClose={() => setAiModalQuery(null)}
         onAddCustomProduct={handleAddCustomProduct}

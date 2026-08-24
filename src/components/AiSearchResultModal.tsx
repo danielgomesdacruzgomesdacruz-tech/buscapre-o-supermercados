@@ -18,6 +18,8 @@ import confetti from 'canvas-confetti';
 interface AiSearchResultModalProps {
   /** Termo buscado. Quando é uma string não vazia, o modal abre e dispara a busca. Quando é null/undefined/vazio, o modal fica fechado. */
   query: string | null | undefined;
+  /** Domínio de origem da busca: 'supermercado', 'veiculos' ou 'eletrodomesticos'. Ajusta o tipo de loja retornado. */
+  domain?: string;
   selectedCity: string;
   onClose: () => void;
   onAddCustomProduct: (productData: any) => void;
@@ -26,6 +28,7 @@ interface AiSearchResultModalProps {
 
 export const AiSearchResultModal: React.FC<AiSearchResultModalProps> = ({
   query,
+  domain,
   selectedCity,
   onClose,
   onAddCustomProduct,
@@ -86,6 +89,7 @@ export const AiSearchResultModal: React.FC<AiSearchResultModalProps> = ({
           body: JSON.stringify({
             query: q,
             city: selectedCity,
+            domain,
           }),
         });
 
@@ -105,22 +109,49 @@ export const AiSearchResultModal: React.FC<AiSearchResultModalProps> = ({
       } catch (err: any) {
         if (cancelled) return;
         console.error('Erro na busca por IA:', err);
+
+        const isVeiculos = domain === 'veiculos';
+        const isEletro = domain === 'eletrodomesticos';
+        const basePrice = isVeiculos ? 79900.0 : isEletro ? 2199.0 : 19.8;
+        const lowest = +(basePrice * 0.92).toFixed(2);
+        const highest = +(basePrice * 1.18).toFixed(2);
+
+        const fallbackMarkets = isVeiculos
+          ? [
+              { supermarketName: 'Concessionária Oficial', estimatedPrice: lowest, dealType: 'Taxa 0% em 24x', notes: 'Menor preço estimado' },
+              { supermarketName: 'Auto Shopping', estimatedPrice: +(lowest * 1.03).toFixed(2), dealType: 'Seminovo Revisado', notes: 'Boa procedência' },
+              { supermarketName: 'Revenda Multimarcas', estimatedPrice: basePrice, dealType: 'Financiamento facilitado', notes: 'Diversas opções de cor' },
+              { supermarketName: 'Revenda Premium', estimatedPrice: highest, dealType: 'Garantia Estendida', notes: 'Linha completa' },
+            ]
+          : isEletro
+          ? [
+              { supermarketName: 'Magazine Luiza', estimatedPrice: lowest, dealType: '10% OFF no Pix', notes: 'Menor preço estimado' },
+              { supermarketName: 'Casas Bahia', estimatedPrice: +(lowest * 1.03).toFixed(2), dealType: 'Parcelamento sem juros', notes: 'Retirada em loja' },
+              { supermarketName: 'Fast Shop', estimatedPrice: basePrice, dealType: 'Garantia Estendida', notes: 'Linha Premium' },
+              { supermarketName: 'Amazon / Mercado Livre', estimatedPrice: highest, dealType: 'Entrega Rápida', notes: 'Comparar cupons online' },
+            ]
+          : [
+              { supermarketName: 'Assaí Atacadista', estimatedPrice: lowest, dealType: 'Atacado / Oferta', notes: 'Menor preço estimado' },
+              { supermarketName: 'Atacadão', estimatedPrice: +(lowest * 1.03).toFixed(2), dealType: 'Preço Direto', notes: 'Excelente custo-benefício' },
+              { supermarketName: 'Carrefour Hiper', estimatedPrice: basePrice, dealType: 'Clube Meu Carrefour', notes: 'Desconto com app' },
+              { supermarketName: 'Pão de Açúcar', estimatedPrice: highest, dealType: 'Preço Balcão', notes: 'Linha Premium' },
+            ];
+
         setResult({
           productName: q,
-          brand: 'Mais Popular',
-          category: 'alimentos',
+          brand: isVeiculos || isEletro ? 'Diversas Marcas' : 'Mais Popular',
+          category: isVeiculos ? 'veiculos' : isEletro ? 'eletrodomesticos' : 'alimentos',
           unit: 'un',
-          volumeOrWeight: 'Embalagem Padrão',
-          averagePrice: 19.80,
-          lowestPrice: 16.49,
-          highestPrice: 24.90,
-          priceSummary: `Em atacarejos (como Assaí e Atacadão) em ${selectedCity}, este item costuma ter descontos de até 22% comprando em maior quantidade.`,
-          marketPrices: [
-            { supermarketName: 'Assaí Atacadista', estimatedPrice: 16.49, dealType: 'Atacado / Oferta', notes: 'Menor preço estimado' },
-            { supermarketName: 'Atacadão', estimatedPrice: 16.90, dealType: 'Preço Direto', notes: 'Excelente custo-benefício' },
-            { supermarketName: 'Carrefour Hiper', estimatedPrice: 19.90, dealType: 'Clube Meu Carrefour', notes: 'Desconto com app' },
-            { supermarketName: 'Pão de Açúcar', estimatedPrice: 24.90, dealType: 'Preço Balcão', notes: 'Linha Premium' },
-          ],
+          volumeOrWeight: isVeiculos || isEletro ? '1 un' : 'Embalagem Padrão',
+          averagePrice: basePrice,
+          lowestPrice: lowest,
+          highestPrice: highest,
+          priceSummary: isVeiculos
+            ? `Comparando concessionárias e revendas em ${selectedCity}, o menor valor estimado é de R$ ${lowest.toFixed(2).replace('.', ',')}.`
+            : isEletro
+            ? `Comparando grandes varejos em ${selectedCity}, o menor valor estimado é de R$ ${lowest.toFixed(2).replace('.', ',')}, geralmente à vista no Pix.`
+            : `Em atacarejos (como Assaí e Atacadão) em ${selectedCity}, este item costuma ter descontos de até 22% comprando em maior quantidade.`,
+          marketPrices: fallbackMarkets,
         });
       } finally {
         if (!cancelled) setLoading(false);
