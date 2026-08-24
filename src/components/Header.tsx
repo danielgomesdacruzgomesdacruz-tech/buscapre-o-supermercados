@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   ShoppingCart,
-  Sparkles,
   Receipt,
   Search,
   Tag,
@@ -126,18 +125,6 @@ const TAB_HEADER_CONFIGS: Record<string, TabHeaderConfig> = {
     badgeStyle: 'bg-amber-100 text-amber-900 border-amber-300',
     subtitle: 'Fotografe o QR Code ou cupom fiscal impresso para extrair produtos, comparar valores e atualizar preços.',
     cityPinColor: 'text-amber-600',
-  },
-  'ai-search': {
-    icon: Sparkles,
-    iconBg: 'bg-purple-600 group-hover:bg-purple-700',
-    iconColor: 'text-white',
-    prefix: 'BuscaPreço',
-    highlightTitle: 'Pesquisa com IA em Tempo Real',
-    titleColor: 'text-purple-600',
-    badgeText: 'Gemini 2.5 Flash',
-    badgeStyle: 'bg-purple-100 text-purple-800 border-purple-200',
-    subtitle: 'Pergunte em linguagem natural: paridade de combustíveis, melhores marcas e cotações ao vivo.',
-    cityPinColor: 'text-purple-600',
   },
   deals: {
     icon: Tag,
@@ -354,19 +341,6 @@ export const Header: React.FC<HeaderProps> = ({
           >
             <Receipt className="w-4 h-4 text-amber-600" />
             <span>Scanner de Nota Fiscal (IA)</span>
-          </button>
-
-          <button
-            id="tab-ai-search"
-            onClick={() => setActiveTab('ai-search')}
-            className={`flex items-center gap-1.5 py-2.5 px-3.5 text-xs font-medium border-b-2 whitespace-nowrap transition rounded-t-lg ${
-              activeTab === 'ai-search'
-                ? 'border-purple-600 text-purple-700 font-semibold bg-purple-50/50'
-                : 'border-transparent text-stone-600 hover:text-stone-900 hover:border-stone-300'
-            }`}
-          >
-            <Sparkles className="w-4 h-4 text-purple-600" />
-            <span>Pesquisa IA em Tempo Real</span>
           </button>
 
           <button
