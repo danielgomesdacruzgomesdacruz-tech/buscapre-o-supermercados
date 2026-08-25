@@ -25,6 +25,7 @@ import {
 } from 'lucide-react';
 import { Product, Supermarket } from '../types';
 import { VehiclesTab } from './VehiclesTab';
+import { AppliancesTab } from './AppliancesTab';
 
 interface ProductSearchTabProps {
   products: Product[];
@@ -36,8 +37,6 @@ interface ProductSearchTabProps {
   onNavigateToAiSearch: (query: string, domain?: string) => void;
   selectedCity?: string;
   onNavigateToRoutes?: () => void;
-  onNavigateToVehicles?: () => void;
-  onNavigateToAppliances?: () => void;
   /** Domínio selecionado, controlado pela barra de categorias no cabeçalho (Header). */
   selectedDomain: string;
   /** Chamado quando o domínio é trocado pela barra de categorias no cabeçalho. */
@@ -197,8 +196,6 @@ export const ProductSearchTab: React.FC<ProductSearchTabProps> = ({
   onNavigateToAiSearch,
   selectedCity = 'São Paulo, SP',
   onNavigateToRoutes,
-  onNavigateToVehicles,
-  onNavigateToAppliances,
   selectedDomain,
   onSelectDomain,
 }) => {
@@ -307,6 +304,14 @@ export const ProductSearchTab: React.FC<ProductSearchTabProps> = ({
       {selectedDomain === 'veiculos' ? (
         <VehiclesTab
           selectedCity={selectedCity}
+          onNavigateToAiSearch={onNavigateToAiSearch}
+          onNavigateToRoutes={onNavigateToRoutes}
+          initialSearchQuery={searchQuery}
+        />
+      ) : selectedDomain === 'eletrodomesticos' ? (
+        <AppliancesTab
+          selectedCity={selectedCity}
+          onAddToCart={onAddToCart}
           onNavigateToAiSearch={onNavigateToAiSearch}
           onNavigateToRoutes={onNavigateToRoutes}
           initialSearchQuery={searchQuery}

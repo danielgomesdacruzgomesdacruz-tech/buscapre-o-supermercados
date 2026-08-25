@@ -6,8 +6,6 @@ import { ReceiptScannerTab } from './components/ReceiptScannerTab';
 import { AiSearchResultModal } from './components/AiSearchResultModal';
 import { DealsCommunityTab } from './components/DealsCommunityTab';
 import { SupermarketRoutesTab } from './components/SupermarketRoutesTab';
-import { VehiclesTab } from './components/VehiclesTab';
-import { AppliancesTab } from './components/AppliancesTab';
 import { ProductHistoryModal } from './components/ProductHistoryModal';
 import { PriceAlertModal } from './components/PriceAlertModal';
 import { INITIAL_PRODUCTS, INITIAL_SUPERMARKETS } from './data/mockProducts';
@@ -72,23 +70,6 @@ export default function App() {
   useEffect(() => {
     localStorage.setItem('buscapreco_products', JSON.stringify(products));
   }, [products]);
-
-  // Mantém a barra de categorias (selectedDomain) sincronizada mesmo quando o
-  // usuário navega direto pelo menu principal (Veículos & Tabela FIPE,
-  // Eletrodomésticos), sem passar pela barra de categorias.
-  useEffect(() => {
-    if (activeTab === 'vehicles' && selectedDomain !== 'veiculos') {
-      setSelectedDomain('veiculos');
-    } else if (activeTab === 'appliances' && selectedDomain !== 'eletrodomesticos') {
-      setSelectedDomain('eletrodomesticos');
-    } else if (
-      activeTab === 'search' &&
-      (selectedDomain === 'veiculos' || selectedDomain === 'eletrodomesticos')
-    ) {
-      setSelectedDomain('supermercado');
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeTab]);
 
   const showToast = (msg: string) => {
     setToastMessage(msg);
@@ -302,15 +283,12 @@ export default function App() {
   // Controla a barra de categorias (Supermercados, Veículos & Automotivo,
   // Farmácia & Saúde, Eletrônicos & Tech, Eletrodomésticos & Linha Branca,
   // Casa & Construção) exibida no cabeçalho quando a aba Supermercados está ativa.
+  // Nenhuma categoria troca de aba principal — todas ficam dentro da mesma
+  // tela "search", só muda o conteúdo interno, mantendo a barra de categorias
+  // sempre visível e consistente.
   const handleSelectDomain = (domainId: string) => {
     setSelectedDomain(domainId);
-    if (domainId === 'veiculos') {
-      setActiveTab('vehicles');
-    } else if (domainId === 'eletrodomesticos') {
-      setActiveTab('appliances');
-    } else {
-      setActiveTab('search');
-    }
+    setActiveTab('search');
   };
 
   const handleNavigateToAiSearch = (query: string, explicitDomain?: string) => {
@@ -381,29 +359,8 @@ export default function App() {
             onNavigateToAiSearch={handleNavigateToAiSearch}
             selectedCity={selectedCity}
             onNavigateToRoutes={() => setActiveTab('routes')}
-            onNavigateToVehicles={() => setActiveTab('vehicles')}
-            onNavigateToAppliances={() => setActiveTab('appliances')}
             selectedDomain={selectedDomain}
             onSelectDomain={handleSelectDomain}
-          />
-        )}
-
-        {activeTab === 'vehicles' && (
-          <VehiclesTab
-            selectedCity={selectedCity}
-            onNavigateToAiSearch={handleNavigateToAiSearch}
-            onNavigateToRoutes={() => setActiveTab('routes')}
-            userCoordinates={userCoordinates}
-          />
-        )}
-
-        {activeTab === 'appliances' && (
-          <AppliancesTab
-            selectedCity={selectedCity}
-            onAddToCart={handleAddToCart}
-            onNavigateToAiSearch={handleNavigateToAiSearch}
-            onNavigateToRoutes={() => setActiveTab('routes')}
-            userCoordinates={userCoordinates}
           />
         )}
 
@@ -456,20 +413,14 @@ export default function App() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-3">
           <div className="flex items-center gap-2">
             <span className="font-bold text-stone-800">
-              {activeTab === 'vehicles'
-                ? 'BuscaPreço Veículos & Tabela FIPE'
-                : activeTab === 'routes'
+              {activeTab === 'routes'
                 ? 'BuscaPreço Rotas & Navegação'
                 : activeTab === 'scanner'
                 ? 'BuscaPreço OCR Scanner'
                 : 'BuscaPreço Supermercados & Atacarejos'}
             </span>
             <span>•</span>
-            <span>
-              {activeTab === 'vehicles'
-                ? 'Cotações FIPE e estoque de concessionárias'
-                : 'Comparador Inteligente de Preços com IA'}
-            </span>
+            <span>Comparador Inteligente de Preços com IA</span>
           </div>
 
           <div className="flex items-center gap-4 text-[11px]">
