@@ -386,7 +386,7 @@ export const ProductSearchTab: React.FC<ProductSearchTabProps> = ({
                   className={`${currentDomainConfig.accentBg} hover:opacity-90 text-white text-xs font-bold px-4 py-3 rounded-2xl flex items-center justify-center gap-1.5 shadow-md whitespace-nowrap transition cursor-pointer`}
                 >
                   <Sparkles className="w-4 h-4" />
-                  Pesquisar com IA na Web
+                  Pesquisar
                 </button>
               </div>
 
@@ -556,7 +556,7 @@ export const ProductSearchTab: React.FC<ProductSearchTabProps> = ({
                     className="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow-xs inline-flex items-center gap-1.5 transition cursor-pointer"
                   >
                     <Sparkles className="w-4 h-4" />
-                    Pesquisar "{searchQuery}" com IA
+                    Pesquisar "{searchQuery}"
                   </button>
                 )}
               </div>

@@ -283,7 +283,7 @@ export const AppliancesTab: React.FC<AppliancesTabProps> = ({
                 className="bg-sky-600 hover:opacity-90 text-white text-xs font-bold px-4 py-3 rounded-2xl flex items-center justify-center gap-1.5 shadow-md whitespace-nowrap transition cursor-pointer"
               >
                 <Sparkles className="w-4 h-4" />
-                Pesquisar com IA na Web
+                Pesquisar
               </button>
             )}
           </div>

@@ -255,7 +255,7 @@ export const VehiclesTab: React.FC<VehiclesTabProps> = ({
                 className="bg-amber-600 hover:bg-amber-500 text-stone-950 text-xs sm:text-sm font-bold px-5 py-3 rounded-2xl flex items-center justify-center gap-1.5 shadow-md whitespace-nowrap transition cursor-pointer"
               >
                 <Sparkles className="w-4 h-4 text-stone-950" />
-                Pesquisar com IA
+                Pesquisar
               </button>
             )}
           </div>
