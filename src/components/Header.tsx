@@ -278,9 +278,7 @@ export const Header: React.FC<HeaderProps> = ({
         {activeTab === 'search' && domainCategories && domainCategories.length > 0 && selectedDomain && onSelectDomain && (
           <div className="pb-3">
             <div className="flex flex-col sm:flex-row sm:items-center gap-1.5 sm:gap-2 sm:overflow-x-auto no-scrollbar">
-              {domainCategories
-                .filter((domain) => !['supermercado', 'veiculos', 'eletrodomesticos'].includes(domain.id))
-                .map((domain) => {
+              {domainCategories.map((domain) => {
                 const Icon = domain.icon;
                 const isSelected = selectedDomain === domain.id;
                 return (
@@ -319,32 +317,6 @@ export const Header: React.FC<HeaderProps> = ({
           >
             <Home className="w-4 h-4 text-emerald-600" />
             <span>Supermercados</span>
-          </button>
-
-          <button
-            id="tab-vehicles"
-            onClick={() => setActiveTab('vehicles')}
-            className={`flex items-center gap-1.5 py-2.5 px-3.5 text-xs font-medium border-b-2 whitespace-nowrap transition cursor-pointer rounded-t-lg ${
-              activeTab === 'vehicles'
-                ? 'border-amber-600 text-amber-800 font-semibold bg-amber-50/80'
-                : 'border-transparent text-stone-600 hover:text-stone-900 hover:border-stone-300'
-            }`}
-          >
-            <Car className="w-4 h-4 text-amber-600" />
-            <span>Veículos & Tabela FIPE</span>
-          </button>
-
-          <button
-            id="tab-appliances"
-            onClick={() => setActiveTab('appliances')}
-            className={`flex items-center gap-1.5 py-2.5 px-3.5 text-xs font-medium border-b-2 whitespace-nowrap transition cursor-pointer rounded-t-lg ${
-              activeTab === 'appliances'
-                ? 'border-sky-600 text-sky-800 font-semibold bg-sky-50/80'
-                : 'border-transparent text-stone-600 hover:text-stone-900 hover:border-stone-300'
-            }`}
-          >
-            <Zap className="w-4 h-4 text-sky-600" />
-            <span>Eletrodomésticos</span>
           </button>
 
           <button
