@@ -288,7 +288,7 @@ export const Header: React.FC<HeaderProps> = ({
                     onClick={() => onSelectDomain(domain.id)}
                     title={domain.name}
                     aria-label={domain.name}
-                    className={`shrink-0 flex items-center justify-center sm:justify-start gap-2 h-11 sm:h-auto rounded-full sm:rounded-xl text-xs font-extrabold tracking-wide transition-all duration-200 cursor-pointer ${
+                    className={`shrink-0 flex items-center justify-center sm:justify-start gap-2 h-11 sm:h-auto rounded-full sm:rounded-xl text-xs font-extrabold tracking-wide transition-all duration-150 ease-out active:scale-125 cursor-pointer ${
                       isSelected
                         ? `${domain.accentBg} text-white shadow-md ring-2 ring-stone-900/10 px-4 sm:px-3.5 sm:py-2.5 scale-110 sm:scale-[1.02]`
                         : 'w-11 sm:w-auto sm:px-3.5 sm:py-2.5 bg-stone-50 hover:bg-stone-100 text-stone-900 border border-stone-200/80'
