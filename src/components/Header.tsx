@@ -7,7 +7,6 @@ import {
   MapPin,
   Store,
   Navigation,
-  Home,
   Car,
   Compass,
   LocateFixed,
@@ -311,22 +310,6 @@ export const Header: React.FC<HeaderProps> = ({
 
         {/* Navigation Tabs */}
         <nav className="flex space-x-1 overflow-x-auto no-scrollbar pt-1 border-t border-stone-100">
-          <button
-            id="tab-search"
-            onClick={() => {
-              setActiveTab('search');
-              if (onSelectDomain) onSelectDomain('supermercado');
-            }}
-            className={`flex items-center gap-1.5 py-2.5 px-3.5 text-xs font-medium border-b-2 whitespace-nowrap transition cursor-pointer rounded-t-lg ${
-              activeTab === 'search'
-                ? 'border-emerald-600 text-emerald-700 font-semibold bg-emerald-50/50'
-                : 'border-transparent text-stone-600 hover:text-stone-900 hover:border-stone-300'
-            }`}
-          >
-            <Home className="w-4 h-4 text-emerald-600" />
-            <span>Supermercados</span>
-          </button>
-
           <button
             id="tab-cart"
             onClick={() => setActiveTab('cart')}

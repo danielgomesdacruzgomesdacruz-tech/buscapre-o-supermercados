@@ -226,6 +226,18 @@ export const SmartCartTab: React.FC<SmartCartTabProps> = ({
 
   return (
     <div className="space-y-6">
+      {/* Top Back Navigation Bar */}
+      <div className="flex items-center justify-between">
+        <button
+          type="button"
+          onClick={onNavigateToSearch}
+          className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-white hover:bg-stone-100 border border-stone-200 text-xs font-bold text-stone-700 hover:text-stone-900 transition shadow-2xs cursor-pointer"
+        >
+          <ArrowRight className="w-4 h-4 text-emerald-600 rotate-180" />
+          <span>Voltar ao Início (Buscar Produtos)</span>
+        </button>
+      </div>
+
       {/* Top Banner with Savings Summary */}
       {splitPlan && (
         <div className="bg-gradient-to-r from-emerald-800 via-emerald-700 to-teal-800 rounded-3xl p-6 sm:p-8 text-white shadow-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
