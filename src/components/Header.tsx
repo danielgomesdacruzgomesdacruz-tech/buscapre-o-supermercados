@@ -288,14 +288,18 @@ export const Header: React.FC<HeaderProps> = ({
                     onClick={() => onSelectDomain(domain.id)}
                     title={domain.name}
                     aria-label={domain.name}
-                    className={`shrink-0 flex items-center justify-center sm:justify-start gap-2 h-11 sm:h-auto rounded-full sm:rounded-xl text-xs font-extrabold tracking-wide transition-all duration-150 ease-out active:scale-125 cursor-pointer ${
+                    className={`group shrink-0 flex items-center justify-center sm:justify-start gap-2 h-11 sm:h-auto rounded-full sm:rounded-xl text-xs font-extrabold tracking-wide transition-all duration-150 ease-out active:scale-[1.35] active:z-10 active:shadow-lg cursor-pointer ${
                       isSelected
                         ? `${domain.accentBg} text-white shadow-md ring-2 ring-stone-900/10 px-4 sm:px-3.5 sm:py-2.5 scale-110 sm:scale-[1.02]`
-                        : 'w-11 sm:w-auto sm:px-3.5 sm:py-2.5 bg-stone-50 hover:bg-stone-100 text-stone-900 border border-stone-200/80'
+                        : 'w-11 active:w-auto active:px-4 sm:w-auto sm:px-3.5 sm:py-2.5 bg-stone-50 hover:bg-stone-100 text-stone-900 border border-stone-200/80'
                     }`}
                   >
                     <Icon className={`w-5 h-5 sm:w-4 sm:h-4 shrink-0 ${isSelected ? 'text-white' : 'text-stone-600'}`} />
-                    <span className={`whitespace-nowrap ${isSelected ? 'inline text-[11px] sm:text-xs' : 'hidden sm:inline'}`}>
+                    <span
+                      className={`whitespace-nowrap text-[11px] sm:text-xs ${
+                        isSelected ? 'inline' : 'hidden group-active:inline sm:inline'
+                      }`}
+                    >
                       {domain.name}
                     </span>
                   </button>
