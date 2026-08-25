@@ -278,7 +278,9 @@ export const Header: React.FC<HeaderProps> = ({
         {activeTab === 'search' && domainCategories && domainCategories.length > 0 && selectedDomain && onSelectDomain && (
           <div className="pb-3">
             <div className="flex flex-col sm:flex-row sm:items-center gap-1.5 sm:gap-2 sm:overflow-x-auto no-scrollbar">
-              {domainCategories.map((domain) => {
+              {domainCategories
+                .filter((domain) => !['supermercado', 'veiculos', 'eletrodomesticos'].includes(domain.id))
+                .map((domain) => {
                 const Icon = domain.icon;
                 const isSelected = selectedDomain === domain.id;
                 return (
@@ -305,7 +307,10 @@ export const Header: React.FC<HeaderProps> = ({
         <nav className="flex space-x-1 overflow-x-auto no-scrollbar pt-1 border-t border-stone-100">
           <button
             id="tab-search"
-            onClick={() => setActiveTab('search')}
+            onClick={() => {
+              setActiveTab('search');
+              if (onSelectDomain) onSelectDomain('supermercado');
+            }}
             className={`flex items-center gap-1.5 py-2.5 px-3.5 text-xs font-medium border-b-2 whitespace-nowrap transition cursor-pointer rounded-t-lg ${
               activeTab === 'search'
                 ? 'border-emerald-600 text-emerald-700 font-semibold bg-emerald-50/50'
