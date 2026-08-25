@@ -277,7 +277,7 @@ export const Header: React.FC<HeaderProps> = ({
         {/* Domain Category Selector Tabs (só aparece na aba Supermercados) */}
         {activeTab === 'search' && domainCategories && domainCategories.length > 0 && selectedDomain && onSelectDomain && (
           <div className="pb-3">
-            <div className="flex flex-col sm:flex-row sm:items-center gap-1.5 sm:gap-2 sm:overflow-x-auto no-scrollbar">
+            <div className="flex items-center gap-2 overflow-x-auto no-scrollbar">
               {domainCategories.map((domain) => {
                 const Icon = domain.icon;
                 const isSelected = selectedDomain === domain.id;
@@ -286,14 +286,16 @@ export const Header: React.FC<HeaderProps> = ({
                     key={domain.id}
                     id={`domain-tab-${domain.id}`}
                     onClick={() => onSelectDomain(domain.id)}
-                    className={`w-full sm:w-auto flex items-center justify-start gap-2 px-3.5 py-2.5 rounded-xl text-xs font-extrabold tracking-wide transition-all cursor-pointer ${
+                    title={domain.name}
+                    aria-label={domain.name}
+                    className={`shrink-0 flex items-center justify-center sm:justify-start gap-2 w-11 h-11 sm:w-auto sm:h-auto px-0 sm:px-3.5 py-0 sm:py-2.5 rounded-full sm:rounded-xl text-xs font-extrabold tracking-wide transition-all cursor-pointer ${
                       isSelected
                         ? `${domain.accentBg} text-white shadow-sm ring-2 ring-stone-900/10 sm:scale-[1.02]`
                         : 'bg-stone-50 hover:bg-stone-100 text-stone-900 border border-stone-200/80'
                     }`}
                   >
-                    <Icon className={`w-4 h-4 ${isSelected ? 'text-white' : 'text-stone-600'}`} />
-                    <span>{domain.name}</span>
+                    <Icon className={`w-5 h-5 sm:w-4 sm:h-4 shrink-0 ${isSelected ? 'text-white' : 'text-stone-600'}`} />
+                    <span className="hidden sm:inline">{domain.name}</span>
                   </button>
                 );
               })}
