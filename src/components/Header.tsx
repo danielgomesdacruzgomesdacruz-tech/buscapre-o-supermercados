@@ -11,6 +11,9 @@ import {
   Compass,
   LocateFixed,
   Zap,
+  Pill,
+  Smartphone,
+  Hammer,
 } from 'lucide-react';
 import { UserCoordinates } from '../utils/geolocation';
 
@@ -63,43 +66,84 @@ interface TabHeaderConfig {
   cityPinColor: string;
 }
 
-const TAB_HEADER_CONFIGS: Record<string, TabHeaderConfig> = {
-  search: {
+// Título do cabeçalho exibido quando a aba Supermercados está ativa, um por
+// categoria da barra de domínios (Supermercados, Veículos, Farmácia, etc).
+const SEARCH_DOMAIN_CONFIGS: Record<string, TabHeaderConfig> = {
+  supermercado: {
     icon: Store,
     iconBg: 'bg-emerald-600 group-hover:bg-emerald-700',
     iconColor: 'text-white',
-    prefix: 'BuscaPreço',
-    highlightTitle: 'Supermercados & Atacarejos',
+    prefix: 'Busca Preços',
+    highlightTitle: 'Supermercados',
     titleColor: 'text-emerald-600',
     badgeText: 'Ao Vivo • Preços de Hoje',
     badgeStyle: 'bg-emerald-100 text-emerald-800 border-emerald-200',
     subtitle: '',
     cityPinColor: 'text-emerald-600',
   },
-  vehicles: {
+  veiculos: {
     icon: Car,
     iconBg: 'bg-amber-500 group-hover:bg-amber-600',
     iconColor: 'text-stone-950',
-    prefix: 'BuscaPreço',
-    highlightTitle: 'Veículos & Tabela FIPE',
+    prefix: 'Busca Preços',
+    highlightTitle: 'Veículos',
     titleColor: 'text-amber-700',
     badgeText: 'FIPE Oficial • Concessionárias',
     badgeStyle: 'bg-amber-100 text-amber-900 border-amber-300',
-    subtitle: 'Consulta oficial da Tabela FIPE, comparativo de preços reais de compra e estoque faturado em concessionárias.',
+    subtitle: '',
     cityPinColor: 'text-amber-600',
   },
-  appliances: {
+  farmacia: {
+    icon: Pill,
+    iconBg: 'bg-sky-600 group-hover:bg-sky-700',
+    iconColor: 'text-white',
+    prefix: 'Busca Preços',
+    highlightTitle: 'Farmácias',
+    titleColor: 'text-sky-700',
+    badgeText: 'Medicamentos & Saúde',
+    badgeStyle: 'bg-sky-100 text-sky-900 border-sky-300',
+    subtitle: '',
+    cityPinColor: 'text-sky-600',
+  },
+  eletronicos: {
+    icon: Smartphone,
+    iconBg: 'bg-purple-600 group-hover:bg-purple-700',
+    iconColor: 'text-white',
+    prefix: 'Busca Preços',
+    highlightTitle: 'Eletrônicos',
+    titleColor: 'text-purple-700',
+    badgeText: 'Celulares & Tecnologia',
+    badgeStyle: 'bg-purple-100 text-purple-900 border-purple-300',
+    subtitle: '',
+    cityPinColor: 'text-purple-600',
+  },
+  eletrodomesticos: {
     icon: Zap,
     iconBg: 'bg-sky-600 group-hover:bg-sky-700',
     iconColor: 'text-white',
-    prefix: 'BuscaPreço',
-    highlightTitle: 'Eletrodomésticos & Linha Branca',
+    prefix: 'Busca Preços',
+    highlightTitle: 'Eletrodomésticos',
     titleColor: 'text-sky-700',
     badgeText: 'Selo Procel A+++ • Grandes Varejos',
     badgeStyle: 'bg-sky-100 text-sky-900 border-sky-300',
-    subtitle: 'Compare preços de geladeiras, lavadoras, air fryers, fornos, micro-ondas e ar-condicionado nas maiores lojas.',
+    subtitle: '',
     cityPinColor: 'text-sky-600',
   },
+  construcao: {
+    icon: Hammer,
+    iconBg: 'bg-orange-600 group-hover:bg-orange-700',
+    iconColor: 'text-white',
+    prefix: 'Busca Preços',
+    highlightTitle: 'Construção',
+    titleColor: 'text-orange-700',
+    badgeText: 'Materiais & Ferramentas',
+    badgeStyle: 'bg-orange-100 text-orange-900 border-orange-300',
+    subtitle: '',
+    cityPinColor: 'text-orange-600',
+  },
+};
+
+const TAB_HEADER_CONFIGS: Record<string, TabHeaderConfig> = {
   cart: {
     icon: ShoppingCart,
     iconBg: 'bg-emerald-600 group-hover:bg-emerald-700',
@@ -163,7 +207,10 @@ export const Header: React.FC<HeaderProps> = ({
   selectedDomain,
   onSelectDomain,
 }) => {
-  const currentConfig = TAB_HEADER_CONFIGS[activeTab] || TAB_HEADER_CONFIGS.search;
+  const currentConfig =
+    activeTab === 'search'
+      ? SEARCH_DOMAIN_CONFIGS[selectedDomain || 'supermercado'] || SEARCH_DOMAIN_CONFIGS.supermercado
+      : TAB_HEADER_CONFIGS[activeTab] || SEARCH_DOMAIN_CONFIGS.supermercado;
   const ActiveIcon = currentConfig.icon;
 
   return (
