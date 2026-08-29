@@ -147,7 +147,7 @@ export const DOMAIN_CATEGORIES: DomainCategoryConfig[] = [
   },
   {
     id: 'eletrodomesticos',
-    name: 'Eletrodomésticos & Linha Branca',
+    name: 'Eletrodomésticos',
     shortLabel: 'Eletrodomésticos',
     icon: Zap,
     badge: 'Magalu, Casas Bahia, Fast Shop, Amazon e Mercado Livre comparados',
