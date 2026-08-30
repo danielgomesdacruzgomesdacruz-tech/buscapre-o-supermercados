@@ -59,6 +59,14 @@ export interface DomainCategoryConfig {
   quickTags: string[];
 }
 
+// Ícone personalizado (imagem PNG enviada pelo usuário) usado no lugar do
+// ícone padrão de "Veículos" na barra de categorias. Aceita a mesma prop
+// className que os ícones do lucide-react, para funcionar como substituto
+// direto em qualquer lugar que renderize `<Icon className="..." />`.
+const VeiculosCustomIcon: React.FC<{ className?: string }> = ({ className }) => (
+  <img src="/icon-veiculos.png" alt="Veículos" className={`${className || ''} object-contain rounded-full`} />
+);
+
 export const DOMAIN_CATEGORIES: DomainCategoryConfig[] = [
   {
     id: 'supermercado',
@@ -88,7 +96,7 @@ export const DOMAIN_CATEGORIES: DomainCategoryConfig[] = [
     id: 'veiculos',
     name: 'Veículos & Automotivo',
     shortLabel: 'Veículos & Autos',
-    icon: Car,
+    icon: VeiculosCustomIcon,
     badge: 'Tabela FIPE oficial, concessionárias, revendas e peças comparados',
     headline: 'Tabela de Preços de Compra de Veículos e Concessionárias',
     subtitle: 'Consulte a Tabela FIPE oficial, compare preços reais de carros novos e seminovos em concessionárias e encontre locais de venda perto de você.',
