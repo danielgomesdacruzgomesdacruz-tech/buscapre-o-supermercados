@@ -59,25 +59,27 @@ export interface DomainCategoryConfig {
 // Ícones personalizados (imagens PNG enviadas pelo usuário) usados no lugar
 // dos ícones padrão na barra de categorias. Aceitam a mesma prop className
 // que os ícones do lucide-react, para funcionar como substitutos diretos em
-// qualquer lugar que renderize `<Icon className="..." />`.
+// qualquer lugar que renderize `<Icon className="..." />`. Usam object-cover
+// (em vez de object-contain) para preencher o espaço por completo e de forma
+// uniforme, já que as imagens originais têm proporções diferentes entre si.
 const VeiculosCustomIcon: React.FC<{ className?: string }> = ({ className }) => (
-  <img src="/icon-veiculos.png" alt="Veículos" className={`${className || ''} object-contain rounded-full`} />
+  <img src="/icon-veiculos.png" alt="Veículos" className={`${className || ''} object-cover rounded-full`} />
 );
 
 const SupermercadoCustomIcon: React.FC<{ className?: string }> = ({ className }) => (
-  <img src="/icon-supermercado.png" alt="Supermercados" className={`${className || ''} object-contain`} />
+  <img src="/icon-supermercado.png" alt="Supermercados" className={`${className || ''} object-cover rounded-full`} />
 );
 
 const FarmaciaCustomIcon: React.FC<{ className?: string }> = ({ className }) => (
-  <img src="/icon-farmacia.png" alt="Farmácia & Saúde" className={`${className || ''} object-contain rounded-full`} />
+  <img src="/icon-farmacia.png" alt="Farmácia & Saúde" className={`${className || ''} object-cover rounded-full`} />
 );
 
 const EletronicosCustomIcon: React.FC<{ className?: string }> = ({ className }) => (
-  <img src="/icon-eletronicos.png" alt="Eletrônicos & Tech" className={`${className || ''} object-contain rounded-full`} />
+  <img src="/icon-eletronicos.png" alt="Eletrônicos & Tech" className={`${className || ''} object-cover rounded-full`} />
 );
 
 const EletrodomesticosCustomIcon: React.FC<{ className?: string }> = ({ className }) => (
-  <img src="/icon-eletrodomesticos.png" alt="Eletrodomésticos" className={`${className || ''} object-contain rounded-full`} />
+  <img src="/icon-eletrodomesticos.png" alt="Eletrodomésticos" className={`${className || ''} object-cover rounded-full`} />
 );
 
 export const DOMAIN_CATEGORIES: DomainCategoryConfig[] = [

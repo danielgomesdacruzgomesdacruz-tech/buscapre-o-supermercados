@@ -340,7 +340,7 @@ export const Header: React.FC<HeaderProps> = ({
                         : 'w-11 active:w-auto active:px-4 sm:w-auto sm:px-3.5 sm:py-2.5 bg-stone-50 hover:bg-stone-100 text-stone-900 border border-stone-200/80'
                     }`}
                   >
-                    <Icon className={`w-5 h-5 sm:w-4 sm:h-4 shrink-0 ${isSelected ? 'text-white' : 'text-stone-600'}`} />
+                    <Icon className={`w-6 h-6 sm:w-5 sm:h-5 shrink-0 ${isSelected ? 'text-white' : 'text-stone-600'}`} />
                     <span
                       className={`whitespace-nowrap text-[11px] sm:text-xs ${
                         isSelected ? 'inline' : 'hidden group-active:inline sm:inline'
