@@ -19,7 +19,6 @@ import {
   Tag,
   DollarSign,
   Building2,
-  Zap,
 } from 'lucide-react';
 import { Product, Supermarket } from '../types';
 import { VehiclesTab } from './VehiclesTab';
@@ -75,6 +74,10 @@ const FarmaciaCustomIcon: React.FC<{ className?: string }> = ({ className }) => 
 
 const EletronicosCustomIcon: React.FC<{ className?: string }> = ({ className }) => (
   <img src="/icon-eletronicos.png" alt="Eletrônicos & Tech" className={`${className || ''} object-contain rounded-full`} />
+);
+
+const EletrodomesticosCustomIcon: React.FC<{ className?: string }> = ({ className }) => (
+  <img src="/icon-eletrodomesticos.png" alt="Eletrodomésticos" className={`${className || ''} object-contain rounded-full`} />
 );
 
 export const DOMAIN_CATEGORIES: DomainCategoryConfig[] = [
@@ -167,7 +170,7 @@ export const DOMAIN_CATEGORIES: DomainCategoryConfig[] = [
     id: 'eletrodomesticos',
     name: 'Eletrodomésticos',
     shortLabel: 'Eletrodomésticos',
-    icon: Zap,
+    icon: EletrodomesticosCustomIcon,
     badge: 'Magalu, Casas Bahia, Fast Shop, Amazon e Mercado Livre comparados',
     headline: 'Compare preços de eletrodomésticos com Selo Procel A+++',
     subtitle: 'Encontre geladeiras Frost Free, lavadoras e lava e seca, air fryers, fornos e ar-condicionado com os maiores descontos no Pix e cupons.',
