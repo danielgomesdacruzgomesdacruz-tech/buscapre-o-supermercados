@@ -15,8 +15,6 @@ import {
   Layers,
   Car,
   Fuel,
-  Pill,
-  Smartphone,
   Hammer,
   Tag,
   DollarSign,
@@ -59,12 +57,24 @@ export interface DomainCategoryConfig {
   quickTags: string[];
 }
 
-// Ícone personalizado (imagem PNG enviada pelo usuário) usado no lugar do
-// ícone padrão de "Veículos" na barra de categorias. Aceita a mesma prop
-// className que os ícones do lucide-react, para funcionar como substituto
-// direto em qualquer lugar que renderize `<Icon className="..." />`.
+// Ícones personalizados (imagens PNG enviadas pelo usuário) usados no lugar
+// dos ícones padrão na barra de categorias. Aceitam a mesma prop className
+// que os ícones do lucide-react, para funcionar como substitutos diretos em
+// qualquer lugar que renderize `<Icon className="..." />`.
 const VeiculosCustomIcon: React.FC<{ className?: string }> = ({ className }) => (
   <img src="/icon-veiculos.png" alt="Veículos" className={`${className || ''} object-contain rounded-full`} />
+);
+
+const SupermercadoCustomIcon: React.FC<{ className?: string }> = ({ className }) => (
+  <img src="/icon-supermercado.png" alt="Supermercados" className={`${className || ''} object-contain`} />
+);
+
+const FarmaciaCustomIcon: React.FC<{ className?: string }> = ({ className }) => (
+  <img src="/icon-farmacia.png" alt="Farmácia & Saúde" className={`${className || ''} object-contain rounded-full`} />
+);
+
+const EletronicosCustomIcon: React.FC<{ className?: string }> = ({ className }) => (
+  <img src="/icon-eletronicos.png" alt="Eletrônicos & Tech" className={`${className || ''} object-contain rounded-full`} />
 );
 
 export const DOMAIN_CATEGORIES: DomainCategoryConfig[] = [
@@ -72,7 +82,7 @@ export const DOMAIN_CATEGORIES: DomainCategoryConfig[] = [
     id: 'supermercado',
     name: 'Supermercados',
     shortLabel: 'Supermercado',
-    icon: Store,
+    icon: SupermercadoCustomIcon,
     badge: 'Mais de 6 redes de supermercados comparadas em tempo real',
     headline: 'Encontre o menor preço no supermercado perto de você',
     subtitle: 'Compare arroz, carnes, leite, cerveja, sabão e muito mais. Descubra onde comprar mais barato.',
@@ -120,7 +130,7 @@ export const DOMAIN_CATEGORIES: DomainCategoryConfig[] = [
     id: 'farmacia',
     name: 'Farmácia & Saúde',
     shortLabel: 'Farmácia',
-    icon: Pill,
+    icon: FarmaciaCustomIcon,
     badge: 'Drogarias, remédios genéricos e produtos de cuidados pessoais',
     headline: 'Encontre o menor preço em farmácias e drogarias perto de você',
     subtitle: 'Compare medicamentos de referência, genéricos, vitaminas, fraldas infantis e dermocosméticos.',
@@ -139,7 +149,7 @@ export const DOMAIN_CATEGORIES: DomainCategoryConfig[] = [
     id: 'eletronicos',
     name: 'Eletrônicos & Tech',
     shortLabel: 'Eletrônicos',
-    icon: Smartphone,
+    icon: EletronicosCustomIcon,
     badge: 'Grandes varejistas, smartphones e informática comparados',
     headline: 'Compare preços de eletrônicos, smartphones e informática',
     subtitle: 'Pesquise celulares, fones de ouvido, notebooks, televisores e acessórios com os menores preços da web.',
