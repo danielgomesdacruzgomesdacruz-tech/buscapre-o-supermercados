@@ -250,6 +250,18 @@ export const ProductSearchTab: React.FC<ProductSearchTabProps> = ({
             product.domain === 'veiculos' ||
             ['combustivel', 'pneus_rodas', 'oleos_fluidos', 'baterias_eletrica', 'pecas_manutencao'].includes(product.category);
           if (isVehicleProduct && !searchQuery) return false;
+        } else if (selectedDomain === 'farmacia') {
+          const isFarmaciaProduct =
+            product.domain === 'farmacia' || product.category === 'farmacia';
+          if (!isFarmaciaProduct && !searchQuery) return false;
+        } else if (selectedDomain === 'eletronicos') {
+          const isEletronicosProduct =
+            product.domain === 'eletronicos' || product.category === 'eletronicos';
+          if (!isEletronicosProduct && !searchQuery) return false;
+        } else if (selectedDomain === 'construcao') {
+          const isConstrucaoProduct =
+            product.domain === 'construcao' || product.category === 'construcao';
+          if (!isConstrucaoProduct && !searchQuery) return false;
         }
 
         // Search filter
