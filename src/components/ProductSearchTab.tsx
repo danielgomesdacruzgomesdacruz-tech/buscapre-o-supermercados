@@ -112,7 +112,7 @@ export const DOMAIN_CATEGORIES: DomainCategoryConfig[] = [
   },
   {
     id: 'veiculos',
-    name: 'Veículos & Automotivo',
+    name: 'Veículos',
     shortLabel: 'Veículos & Autos',
     icon: VeiculosCustomIcon,
     badge: 'Tabela FIPE oficial, concessionárias, revendas e peças comparados',
@@ -136,7 +136,7 @@ export const DOMAIN_CATEGORIES: DomainCategoryConfig[] = [
   },
   {
     id: 'farmacia',
-    name: 'Farmácia & Saúde',
+    name: 'Farmácia',
     shortLabel: 'Farmácia',
     icon: FarmaciaCustomIcon,
     badge: 'Drogarias, remédios genéricos e produtos de cuidados pessoais',
@@ -155,7 +155,7 @@ export const DOMAIN_CATEGORIES: DomainCategoryConfig[] = [
   },
   {
     id: 'eletronicos',
-    name: 'Eletrônicos & Tech',
+    name: 'Eletrônicos',
     shortLabel: 'Eletrônicos',
     icon: EletronicosCustomIcon,
     badge: 'Grandes varejistas, smartphones e informática comparados',
@@ -191,7 +191,7 @@ export const DOMAIN_CATEGORIES: DomainCategoryConfig[] = [
   },
   {
     id: 'construcao',
-    name: 'Casa & Construção',
+    name: 'Construção',
     shortLabel: 'Construção',
     icon: ConstrucaoCustomIcon,
     badge: 'Home centers, depósitos de materiais e ferramentas',
