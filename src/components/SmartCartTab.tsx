@@ -205,21 +205,35 @@ export const SmartCartTab: React.FC<SmartCartTabProps> = ({
 
   if (cart.length === 0) {
     return (
-      <div className="bg-white rounded-3xl p-10 sm:p-16 text-center border border-stone-200 shadow-xs max-w-2xl mx-auto my-6">
-        <div className="w-16 h-16 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center mx-auto mb-4">
-          <ShoppingCart className="w-8 h-8" />
+      <div className="space-y-6">
+        {/* Top Back Navigation Bar */}
+        <div className="flex items-center justify-between">
+          <button
+            type="button"
+            onClick={onNavigateToSearch}
+            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-white hover:bg-stone-100 border border-stone-200 text-xs font-bold text-stone-700 hover:text-stone-900 transition shadow-2xs cursor-pointer"
+          >
+            <ArrowRight className="w-4 h-4 text-emerald-600 rotate-180" />
+            <span>Voltar ao Início (Buscar Produtos)</span>
+          </button>
         </div>
-        <h3 className="text-xl font-bold text-stone-900">Seu carrinho inteligente está vazio</h3>
-        <p className="text-xs sm:text-sm text-stone-500 max-w-md mx-auto mt-2 mb-6">
-          Adicione produtos para que nosso algoritmo calcule qual supermercado é mais barato e como economizar até 30% dividindo suas compras!
-        </p>
-        <button
-          onClick={onNavigateToSearch}
-          className="bg-emerald-600 hover:bg-emerald-700 text-white text-xs sm:text-sm font-bold px-6 py-3 rounded-xl shadow-xs inline-flex items-center gap-2 transition"
-        >
-          <Plus className="w-4 h-4" />
-          Explorar Produtos e Preços
-        </button>
+
+        <div className="bg-white rounded-3xl p-10 sm:p-16 text-center border border-stone-200 shadow-xs max-w-2xl mx-auto my-6">
+          <div className="w-16 h-16 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center mx-auto mb-4">
+            <ShoppingCart className="w-8 h-8" />
+          </div>
+          <h3 className="text-xl font-bold text-stone-900">Seu carrinho inteligente está vazio</h3>
+          <p className="text-xs sm:text-sm text-stone-500 max-w-md mx-auto mt-2 mb-6">
+            Adicione produtos para que nosso algoritmo calcule qual supermercado é mais barato e como economizar até 30% dividindo suas compras!
+          </p>
+          <button
+            onClick={onNavigateToSearch}
+            className="bg-emerald-600 hover:bg-emerald-700 text-white text-xs sm:text-sm font-bold px-6 py-3 rounded-xl shadow-xs inline-flex items-center gap-2 transition"
+          >
+            <Plus className="w-4 h-4" />
+            Explorar Produtos e Preços
+          </button>
+        </div>
       </div>
     );
   }
