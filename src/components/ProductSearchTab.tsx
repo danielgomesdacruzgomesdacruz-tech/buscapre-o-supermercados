@@ -15,7 +15,6 @@ import {
   Layers,
   Car,
   Fuel,
-  Hammer,
   Tag,
   DollarSign,
   Building2,
@@ -80,6 +79,10 @@ const EletronicosCustomIcon: React.FC<{ className?: string }> = ({ className }) 
 
 const EletrodomesticosCustomIcon: React.FC<{ className?: string }> = ({ className }) => (
   <img src="/icon-eletrodomesticos.png" alt="Eletrodomésticos" className={`${className || ''} object-cover rounded-full`} />
+);
+
+const ConstrucaoCustomIcon: React.FC<{ className?: string }> = ({ className }) => (
+  <img src="/icon-construcao.png" alt="Casa & Construção" className={`${className || ''} object-cover rounded-full`} />
 );
 
 export const DOMAIN_CATEGORIES: DomainCategoryConfig[] = [
@@ -190,7 +193,7 @@ export const DOMAIN_CATEGORIES: DomainCategoryConfig[] = [
     id: 'construcao',
     name: 'Casa & Construção',
     shortLabel: 'Construção',
-    icon: Hammer,
+    icon: ConstrucaoCustomIcon,
     badge: 'Home centers, depósitos de materiais e ferramentas',
     headline: 'Compare materiais de construção, ferramentas e tintas',
     subtitle: 'Encontre onde comprar materiais de reforma, iluminação e ferramentas com os melhores descontos.',
