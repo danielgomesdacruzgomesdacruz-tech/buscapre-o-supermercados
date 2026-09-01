@@ -244,21 +244,23 @@ export const VehiclesTab: React.FC<VehiclesTabProps> = ({
           </div>
 
           {/* Busca rápida por combustível */}
-          <div className="flex flex-col sm:flex-row sm:items-center gap-1.5 sm:overflow-x-auto sm:no-scrollbar mb-5 text-xs sm:text-[11px] text-stone-200">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-1.5 mb-5 text-xs sm:text-[11px] text-stone-200">
             <span className="font-bold text-amber-300 shrink-0">Combustível:</span>
-            {['Gasolina Comum', 'Gasolina Aditivada', 'Etanol (Álcool)', 'Diesel'].map((fuel) => (
-              <button
-                key={fuel}
-                type="button"
-                onClick={() => {
-                  setSearchQuery(fuel);
-                  setActiveSubTab('prices');
-                }}
-                className="px-2.5 py-1.5 sm:py-1 rounded-lg bg-white/15 hover:bg-white/25 text-white font-semibold transition whitespace-nowrap cursor-pointer border border-white/20 text-left"
-              >
-                {fuel}
-              </button>
-            ))}
+            <div className="grid grid-cols-2 gap-1.5 sm:flex sm:items-center sm:gap-1.5 sm:overflow-x-auto sm:no-scrollbar">
+              {['Gasolina Comum', 'Etanol (Álcool)', 'Gasolina Aditivada', 'Diesel'].map((fuel) => (
+                <button
+                  key={fuel}
+                  type="button"
+                  onClick={() => {
+                    setSearchQuery(fuel);
+                    setActiveSubTab('prices');
+                  }}
+                  className="px-2.5 py-1.5 sm:py-1 rounded-lg bg-white/15 hover:bg-white/25 text-white font-semibold transition whitespace-nowrap cursor-pointer border border-white/20 text-left"
+                >
+                  {fuel}
+                </button>
+              ))}
+            </div>
           </div>
 
           <div className="flex flex-wrap items-center gap-2 mb-3">
