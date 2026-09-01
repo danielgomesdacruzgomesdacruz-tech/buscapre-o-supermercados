@@ -208,25 +208,8 @@ export const VehiclesTab: React.FC<VehiclesTabProps> = ({
       <div className="bg-gradient-to-br from-slate-950 via-slate-900 to-amber-950 text-white rounded-3xl p-6 sm:p-8 shadow-xl relative overflow-hidden">
         <div className="absolute -right-12 -bottom-12 w-80 h-80 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
         <div className="relative z-10 max-w-4xl">
-          <div className="flex flex-wrap items-center gap-2 mb-3">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-amber-500/20 text-amber-300 border border-amber-500/30">
-              <Car className="w-3.5 h-3.5" />
-              Tabela FIPE Oficial • Referência {FIPE_REFERENCE_MONTH}
-            </span>
-            <span className="text-xs text-stone-300 flex items-center gap-1 bg-white/10 px-2.5 py-1 rounded-full border border-white/10">
-              <MapPin className="w-3 h-3 text-amber-400" /> {selectedCity}
-            </span>
-          </div>
-
-          <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
-            Consulta Tabela FIPE & Preços de Compra de Veículos
-          </h2>
-          <p className="text-stone-300 text-xs sm:text-sm mt-1.5 mb-5 max-w-3xl">
-            Pesquise o <strong>valor oficial de referência da Tabela FIPE</strong> para carros, utilitários, picapes e seminovos. Compare com as ofertas reais de concessionárias e lojas com estoque faturado em <strong>{selectedCity}</strong>.
-          </p>
-
           {/* Search bar inside banner */}
-          <div className="flex flex-col sm:flex-row gap-2">
+          <div className="flex flex-col sm:flex-row gap-2 mb-5">
             <div className="relative flex-1">
               <Search className="w-5 h-5 absolute left-3.5 top-3.5 text-stone-400" />
               <input
@@ -259,6 +242,23 @@ export const VehiclesTab: React.FC<VehiclesTabProps> = ({
               </button>
             )}
           </div>
+
+          <div className="flex flex-wrap items-center gap-2 mb-3">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-amber-500/20 text-amber-300 border border-amber-500/30">
+              <Car className="w-3.5 h-3.5" />
+              Tabela FIPE Oficial • Referência {FIPE_REFERENCE_MONTH}
+            </span>
+            <span className="text-xs text-stone-300 flex items-center gap-1 bg-white/10 px-2.5 py-1 rounded-full border border-white/10">
+              <MapPin className="w-3 h-3 text-amber-400" /> {selectedCity}
+            </span>
+          </div>
+
+          <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
+            Consulta Tabela FIPE & Preços de Compra de Veículos
+          </h2>
+          <p className="text-stone-300 text-xs sm:text-sm mt-1.5 mb-5 max-w-3xl">
+            Pesquise o <strong>valor oficial de referência da Tabela FIPE</strong> para carros, utilitários, picapes e seminovos. Compare com as ofertas reais de concessionárias e lojas com estoque faturado em <strong>{selectedCity}</strong>.
+          </p>
 
           {/* Quick Search Tags */}
           <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar pt-3 text-[11px] text-stone-300">

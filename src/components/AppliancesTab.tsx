@@ -231,30 +231,8 @@ export const AppliancesTab: React.FC<AppliancesTabProps> = ({
         <div className="absolute -left-12 -top-12 w-80 h-80 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
 
         <div className="relative z-10 max-w-4xl">
-          <div className="flex flex-wrap items-center gap-2 mb-3">
-            <span className="bg-sky-500/20 border border-sky-400/30 text-sky-300 text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1.5">
-              <Zap className="w-3.5 h-3.5 text-sky-400" />
-              Comparador Oficial de Eletrodomésticos
-            </span>
-            <span className="bg-amber-500/20 border border-amber-400/30 text-amber-300 text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1.5">
-              <ShieldCheck className="w-3.5 h-3.5 text-amber-400" />
-              Selo Procel A+++ & Eficiência Energética
-            </span>
-            <span className="bg-emerald-500/20 border border-emerald-400/30 text-emerald-300 text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1.5">
-              <Tag className="w-3.5 h-3.5 text-emerald-400" />
-              Magalu • Casas Bahia • Fast Shop • Amazon • Mercado Livre
-            </span>
-          </div>
-
-          <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white mb-2">
-            Pesquise e Compare Preços de Eletrodomésticos
-          </h2>
-          <p className="text-stone-300 text-sm max-w-3xl leading-relaxed">
-            Compare geladeiras Frost Free, lavadoras e lava e seca, air fryers, fornos e micro-ondas, cooktops de indução e ar-condicionado. Encontre descontos à vista no Pix, cupons ativos e lojas com showroom físico perto de você em <span className="text-sky-300 font-bold">{selectedCity}</span>.
-          </p>
-
           {/* Search Input Bar */}
-          <div className="relative flex flex-col sm:flex-row gap-2 mt-5">
+          <div className="relative flex flex-col sm:flex-row gap-2 mb-5">
             <div className="relative flex-1">
               <Search className="w-5 h-5 absolute left-3.5 top-3.5 text-stone-400" />
               <input
@@ -287,6 +265,28 @@ export const AppliancesTab: React.FC<AppliancesTabProps> = ({
               </button>
             )}
           </div>
+
+          <div className="flex flex-wrap items-center gap-2 mb-3">
+            <span className="bg-sky-500/20 border border-sky-400/30 text-sky-300 text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1.5">
+              <Zap className="w-3.5 h-3.5 text-sky-400" />
+              Comparador Oficial de Eletrodomésticos
+            </span>
+            <span className="bg-amber-500/20 border border-amber-400/30 text-amber-300 text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1.5">
+              <ShieldCheck className="w-3.5 h-3.5 text-amber-400" />
+              Selo Procel A+++ & Eficiência Energética
+            </span>
+            <span className="bg-emerald-500/20 border border-emerald-400/30 text-emerald-300 text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1.5">
+              <Tag className="w-3.5 h-3.5 text-emerald-400" />
+              Magalu • Casas Bahia • Fast Shop • Amazon • Mercado Livre
+            </span>
+          </div>
+
+          <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white mb-2">
+            Pesquise e Compare Preços de Eletrodomésticos
+          </h2>
+          <p className="text-stone-300 text-sm max-w-3xl leading-relaxed">
+            Compare geladeiras Frost Free, lavadoras e lava e seca, air fryers, fornos e micro-ondas, cooktops de indução e ar-condicionado. Encontre descontos à vista no Pix, cupons ativos e lojas com showroom físico perto de você em <span className="text-sky-300 font-bold">{selectedCity}</span>.
+          </p>
 
           {/* Quick Search Suggestions Chips */}
           <div className="flex flex-wrap items-center gap-1.5 mt-3">
