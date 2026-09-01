@@ -243,6 +243,24 @@ export const VehiclesTab: React.FC<VehiclesTabProps> = ({
             )}
           </div>
 
+          {/* Busca rápida por combustível */}
+          <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar mb-5 text-[11px] text-stone-300">
+            <span className="font-bold text-amber-300 shrink-0">Combustível:</span>
+            {['Gasolina Comum', 'Gasolina Aditivada', 'Etanol (Álcool)', 'Diesel'].map((fuel) => (
+              <button
+                key={fuel}
+                type="button"
+                onClick={() => {
+                  setSearchQuery(fuel);
+                  setActiveSubTab('prices');
+                }}
+                className="px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-stone-200 hover:text-white transition whitespace-nowrap cursor-pointer border border-white/10"
+              >
+                {fuel}
+              </button>
+            ))}
+          </div>
+
           <div className="flex flex-wrap items-center gap-2 mb-3">
             <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-amber-500/20 text-amber-300 border border-amber-500/30">
               <Car className="w-3.5 h-3.5" />
