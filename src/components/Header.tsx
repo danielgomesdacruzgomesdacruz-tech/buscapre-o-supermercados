@@ -351,15 +351,18 @@ export const Header: React.FC<HeaderProps> = ({
           </div>
         )}
 
+        {/* Divisor em negro separando as abas de domínio das abas de ferramentas (mobile) */}
+        <div className="h-1 bg-stone-900 rounded-full mb-2 sm:hidden" />
+
         {/* Navigation Tabs */}
-        <nav className="flex space-x-1 overflow-x-auto no-scrollbar pt-1 border-t border-stone-100">
+        <nav className="grid grid-cols-2 gap-2 sm:flex sm:space-x-1 sm:gap-0 sm:overflow-x-auto sm:no-scrollbar pt-1 sm:border-t sm:border-stone-100">
           <button
             id="tab-cart"
             onClick={() => setActiveTab('cart')}
-            className={`flex items-center gap-1.5 py-2.5 px-3.5 text-xs font-medium border-b-2 whitespace-nowrap transition rounded-t-lg ${
+            className={`order-2 sm:order-1 flex items-center justify-center sm:justify-start gap-1.5 py-2.5 px-3.5 text-xs font-medium whitespace-nowrap transition rounded-lg sm:rounded-t-lg border sm:border-0 sm:border-b-2 ${
               activeTab === 'cart'
-                ? 'border-emerald-600 text-emerald-700 font-semibold bg-emerald-50/50'
-                : 'border-transparent text-stone-600 hover:text-stone-900 hover:border-stone-300'
+                ? 'bg-emerald-50 border-emerald-200 text-emerald-700 font-semibold sm:bg-emerald-50/50 sm:border-emerald-600'
+                : 'bg-stone-50 border-stone-200 text-stone-600 hover:text-stone-900 sm:bg-transparent sm:border-transparent sm:hover:border-stone-300'
             }`}
           >
             <ShoppingCart className="w-4 h-4 text-emerald-600" />
@@ -374,10 +377,10 @@ export const Header: React.FC<HeaderProps> = ({
           <button
             id="tab-routes"
             onClick={() => setActiveTab('routes')}
-            className={`flex items-center gap-1.5 py-2.5 px-3.5 text-xs font-medium border-b-2 whitespace-nowrap transition rounded-t-lg ${
+            className={`order-4 sm:order-2 flex items-center justify-center sm:justify-start gap-1.5 py-2.5 px-3.5 text-xs font-medium whitespace-nowrap transition rounded-lg sm:rounded-t-lg border sm:border-0 sm:border-b-2 ${
               activeTab === 'routes'
-                ? 'border-indigo-600 text-indigo-700 font-semibold bg-indigo-50/50'
-                : 'border-transparent text-stone-600 hover:text-stone-900 hover:border-stone-300'
+                ? 'bg-indigo-50 border-indigo-200 text-indigo-700 font-semibold sm:bg-indigo-50/50 sm:border-indigo-600'
+                : 'bg-stone-50 border-stone-200 text-stone-600 hover:text-stone-900 sm:bg-transparent sm:border-transparent sm:hover:border-stone-300'
             }`}
           >
             <Navigation className="w-4 h-4 text-indigo-600" />
@@ -387,10 +390,10 @@ export const Header: React.FC<HeaderProps> = ({
           <button
             id="tab-scanner"
             onClick={() => setActiveTab('scanner')}
-            className={`flex items-center gap-1.5 py-2.5 px-3.5 text-xs font-medium border-b-2 whitespace-nowrap transition rounded-t-lg ${
+            className={`order-1 sm:order-3 flex items-center justify-center sm:justify-start gap-1.5 py-2.5 px-3.5 text-xs font-medium whitespace-nowrap transition rounded-lg sm:rounded-t-lg border sm:border-0 sm:border-b-2 ${
               activeTab === 'scanner'
-                ? 'border-amber-600 text-amber-800 font-semibold bg-amber-50/50'
-                : 'border-transparent text-stone-600 hover:text-stone-900 hover:border-stone-300'
+                ? 'bg-amber-50 border-amber-200 text-amber-800 font-semibold sm:bg-amber-50/50 sm:border-amber-600'
+                : 'bg-stone-50 border-stone-200 text-stone-600 hover:text-stone-900 sm:bg-transparent sm:border-transparent sm:hover:border-stone-300'
             }`}
           >
             <Receipt className="w-4 h-4 text-amber-600" />
@@ -400,10 +403,10 @@ export const Header: React.FC<HeaderProps> = ({
           <button
             id="tab-deals"
             onClick={() => setActiveTab('deals')}
-            className={`flex items-center gap-1.5 py-2.5 px-3.5 text-xs font-medium border-b-2 whitespace-nowrap transition rounded-t-lg ${
+            className={`order-3 sm:order-4 flex items-center justify-center sm:justify-start gap-1.5 py-2.5 px-3.5 text-xs font-medium whitespace-nowrap transition rounded-lg sm:rounded-t-lg border sm:border-0 sm:border-b-2 ${
               activeTab === 'deals'
-                ? 'border-rose-600 text-rose-700 font-semibold bg-rose-50/50'
-                : 'border-transparent text-stone-600 hover:text-stone-900 hover:border-stone-300'
+                ? 'bg-rose-50 border-rose-200 text-rose-700 font-semibold sm:bg-rose-50/50 sm:border-rose-600'
+                : 'bg-stone-50 border-stone-200 text-stone-600 hover:text-stone-900 sm:bg-transparent sm:border-transparent sm:hover:border-stone-300'
             }`}
           >
             <Tag className="w-4 h-4 text-rose-500" />
