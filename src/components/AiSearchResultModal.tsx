@@ -311,6 +311,11 @@ export const AiSearchResultModal: React.FC<AiSearchResultModalProps> = ({
                   ? 'Analisando lojas de material de construção'
                   : 'Analisando atacarejos, hipermercados e redes locais'}
               </p>
+              <p className="text-xs text-stone-500 mt-4 max-w-sm mx-auto leading-relaxed">
+                Tenha paciência, aguarde um momento. A primeira busca pode demorar um pouco, pois estamos em busca das melhores ofertas para você.
+                <br />
+                Não saia desta página.
+              </p>
             </div>
           ) : result ? (
             <div className="space-y-6">
