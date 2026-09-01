@@ -386,22 +386,8 @@ export const ProductSearchTab: React.FC<ProductSearchTabProps> = ({
           <div className={`${currentDomainConfig.gradientClass} rounded-3xl p-6 sm:p-8 text-white shadow-xl relative overflow-hidden transition-all duration-300`}>
             <div className="absolute -right-10 -bottom-10 w-64 h-64 bg-white/5 rounded-full blur-2xl pointer-events-none" />
             <div className="relative z-10 max-w-3xl">
-              <div className="flex flex-wrap items-center gap-2 mb-3">
-                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-white/10 text-white backdrop-blur-xs border border-white/15">
-                  <Sparkles className="w-3.5 h-3.5 text-amber-300" />
-                  {currentDomainConfig.badge}
-                </span>
-              </div>
-
-              <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
-                {currentDomainConfig.headline}
-              </h2>
-              <p className="text-stone-200 text-xs sm:text-sm mt-1.5 mb-5">
-                {currentDomainConfig.subtitle}
-              </p>
-
               {/* Search Input Bar */}
-              <div className="relative flex flex-col sm:flex-row gap-2">
+              <div className="relative flex flex-col sm:flex-row gap-2 mb-5">
                 <div className="relative flex-1">
                   <Search className="w-5 h-5 absolute left-3.5 top-3.5 text-stone-400" />
                   <input
@@ -432,6 +418,20 @@ export const ProductSearchTab: React.FC<ProductSearchTabProps> = ({
                   Pesquisar
                 </button>
               </div>
+
+              <div className="flex flex-wrap items-center gap-2 mb-3">
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-white/10 text-white backdrop-blur-xs border border-white/15">
+                  <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+                  {currentDomainConfig.badge}
+                </span>
+              </div>
+
+              <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
+                {currentDomainConfig.headline}
+              </h2>
+              <p className="text-stone-200 text-xs sm:text-sm mt-1.5 mb-5">
+                {currentDomainConfig.subtitle}
+              </p>
 
               {/* Quick Search Suggestions Chips */}
               <div className="flex items-center gap-1.5 flex-wrap mt-4 pt-3 border-t border-white/10">
