@@ -244,7 +244,7 @@ export const VehiclesTab: React.FC<VehiclesTabProps> = ({
           </div>
 
           {/* Busca rápida por combustível */}
-          <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar mb-5 text-[11px] text-stone-300">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-1.5 sm:overflow-x-auto sm:no-scrollbar mb-5 text-xs sm:text-[11px] text-stone-200">
             <span className="font-bold text-amber-300 shrink-0">Combustível:</span>
             {['Gasolina Comum', 'Gasolina Aditivada', 'Etanol (Álcool)', 'Diesel'].map((fuel) => (
               <button
@@ -254,7 +254,7 @@ export const VehiclesTab: React.FC<VehiclesTabProps> = ({
                   setSearchQuery(fuel);
                   setActiveSubTab('prices');
                 }}
-                className="px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-stone-200 hover:text-white transition whitespace-nowrap cursor-pointer border border-white/10"
+                className="px-2.5 py-1.5 sm:py-1 rounded-lg bg-white/15 hover:bg-white/25 text-white font-semibold transition whitespace-nowrap cursor-pointer border border-white/20 text-left"
               >
                 {fuel}
               </button>
