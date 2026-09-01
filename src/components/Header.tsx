@@ -309,7 +309,7 @@ export const Header: React.FC<HeaderProps> = ({
                   : 'bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100'
               }`}
             >
-              <ShoppingCart className="w-4 h-4" />
+              <ShoppingCart className="w-4 h-4 hidden sm:block" />
               <span>Carrinho</span>
               {cartCount > 0 && (
                 <span className="bg-emerald-700 text-white text-[11px] font-bold px-1.5 py-0.2 rounded-full min-w-5 text-center">
