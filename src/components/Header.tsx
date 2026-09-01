@@ -341,7 +341,7 @@ export const Header: React.FC<HeaderProps> = ({
                     }`}
                   >
                     <Icon className={`w-5 h-5 shrink-0 ${isSelected ? 'text-white' : 'text-stone-600'}`} />
-                    <span className="whitespace-nowrap text-[11px] sm:text-xs truncate">
+                    <span className="whitespace-nowrap text-sm font-bold italic truncate">
                       {domain.name}
                     </span>
                   </button>
